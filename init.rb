@@ -1,6 +1,6 @@
-require 'semantic_attributes'
+require 'predicates'
 require 'semantic_attribute'
-require 'predicate_set'
+require 'semantic_attributes'
 require 'active_record_predicates'
 
 ActiveRecord::Base.send(:include, ActiveRecord::Predicates)

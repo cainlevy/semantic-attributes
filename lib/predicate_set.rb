@@ -1,5 +1,5 @@
 # a set of SemanticAttribute objects, which themselves contain Predicates
-class PredicateSet
+class SemanticAttributes
   def initialize
     @set = []
   end
@@ -13,7 +13,7 @@ class PredicateSet
   def [](field)
     field = field.to_sym
     semantic_attribute = @set.find {|i| i.field == field}
-    @set << semantic_attribute = SemanticAttribute.new(field) unless semantic_attribute
+    self.add(semantic_attribute = SemanticAttribute.new(field)) unless semantic_attribute
     semantic_attribute
   end
 end

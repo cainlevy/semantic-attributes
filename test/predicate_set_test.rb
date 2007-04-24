@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class PredicateSetTest < Test::Unit::TestCase
+class SemanticAttributesTest < Test::Unit::TestCase
   def setup
-    @set = PredicateSet.new
+    @set = SemanticAttributes.new
   end
 
   def test_add

@@ -5,9 +5,9 @@ module ActiveRecord
       base.extend ClassMethods
     end
 
-    # provides a shortcut to the class's PredicateSet object
-    def predicates
-      self.class.predicates
+    # provides a shortcut to the class's SemanticAttributes object
+    def semantic_attributes
+      self.class.semantic_attributes
     end
 
     module ClassMethods
@@ -25,7 +25,7 @@ module ActiveRecord
             args = [predicate]
             args << options if method == :add and options
             fields.each do |field|
-              self.predicates[field].send(method, *args)
+              self.semantic_attributes[field].send(method, *args)
             end
           else
             raise
@@ -33,9 +33,9 @@ module ActiveRecord
         end
       end
 
-      # interface with the PredicateSet object
+      # interface with the SemanticAttributes object
       def predicates
-        @predicates ||= PredicateSet.new
+        @predicates ||= SemanticAttributes.new
       end
     end
   end

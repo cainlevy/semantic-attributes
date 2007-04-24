@@ -6,16 +6,22 @@ class SemanticAttribute
     @set = []
   end
 
+  # whether this attribute has the given predicate
+  # accepts the 'short name' of a predicate (e.g. "phone_number" instead of Predicates::PhoneNumber)
   def has?(predicate)
     predicate = class_of predicate
     @set.any? {|item| item.is_a? predicate}
   end
 
+  # retrieves a predicate by name from the attribute
+  # accepts the 'short name' of a predicate (e.g. "phone_number" instead of Predicates::PhoneNumber)
   def get(predicate)
     predicate = class_of predicate
     @set.find {|item| item.is_a? predicate}
   end
 
+  # adds a predicate to the attribute, with options
+  # accepts the 'short name' of a predicate (e.g. "phone_number" instead of Predicates::PhoneNumber)
   def add(predicate, options = {})
     predicate = class_of predicate
     @set << predicate.new(options)

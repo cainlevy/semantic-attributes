@@ -16,7 +16,7 @@ end
 class ActiveRecordExtensionsTest < Test::Unit::TestCase
   def test_module
     assert ActiveRecord::Base.included_modules.include?(ActiveRecord::Predicates)
-    assert ActiveRecord::Base.predicates.is_a?(PredicateSet)
+    assert ActiveRecord::Base.semantic_attributes.is_a?(SemanticAttributes)
   end
 
   def test_method_missing
@@ -26,13 +26,13 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
       FakeModel.hello_world_is_an_email
     }
 
-    assert FakeModel.predicates[:foo].has?(:required)
+    assert FakeModel.semantic_attributes[:foo].has?(:required)
     assert FakeModel.foo_is_required?
 
-    assert FakeModel.predicates[:bar].has?(:length)
+    assert FakeModel.semantic_attributes[:bar].has?(:length)
     assert FakeModel.bar_has_length?
 
-    assert FakeModel.predicates[:hello_world].has?(:email)
+    assert FakeModel.semantic_attributes[:hello_world].has?(:email)
     assert FakeModel.hello_world_is_an_email?
   end
 end
