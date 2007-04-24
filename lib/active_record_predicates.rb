@@ -34,8 +34,8 @@ module ActiveRecord
       end
 
       # interface with the SemanticAttributes object
-      def predicates
-        @predicates ||= SemanticAttributes.new
+      def semantic_attributes
+        @semantic_attributes ||= SemanticAttributes.new
       end
     end
   end
