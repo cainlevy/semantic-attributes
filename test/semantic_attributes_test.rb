@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class AnnotationsTest < Test::Unit::TestCase
-  # test individual annotations here
+class PredicatesTest < Test::Unit::TestCase
+  # test individual predicates here
 
   # temporary placeholder
   def test_placeholder

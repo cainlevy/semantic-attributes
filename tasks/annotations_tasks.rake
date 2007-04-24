@@ -1,4 +1,4 @@
 # desc "Explaining what the task does"
-# task :annotations do
+# task :predicates do
 #   # Task goes here
 # end

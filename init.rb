@@ -1,6 +1,6 @@
-require 'annotations'
-require 'annotated_field'
-require 'annotation_set'
-require 'active_record_annotations'
+require 'semantic_attributes'
+require 'semantic_attribute'
+require 'predicate_set'
+require 'active_record_predicates'
 
-ActiveRecord::Base.send(:include, ActiveRecord::Annotations)
+ActiveRecord::Base.send(:include, ActiveRecord::Predicates)

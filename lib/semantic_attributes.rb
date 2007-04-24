@@ -1,6 +1,6 @@
-# namespace for the possible annotations. any class in this namespace (besides Base) may be added as an annotation.
-module Annotations
-  # the base class for all annotations. defines the interface and standard settings.
+# namespace for the possible predicates. any class in this namespace (besides Base) may be added as a predicate.
+module Predicates
+  # the base class for all predicates. defines the interface and standard settings.
   class Base
     # the error string when validation fails
     attr_accessor :error
@@ -12,7 +12,7 @@ module Annotations
       end
     end
 
-    # overwrite this to provide a validation routine for your annotation
+    # overwrite this to provide a validation routine for your predicate
     def validation
       raise MethodNotImplementedError
     end
