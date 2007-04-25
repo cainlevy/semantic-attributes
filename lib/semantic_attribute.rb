@@ -36,6 +36,6 @@ class SemanticAttribute
 
   # the actual predicate class for the given name
   def class_of(short_name)
-    self.fqn(short_name).constantize
+    fqn(short_name).constantize
   end
 end

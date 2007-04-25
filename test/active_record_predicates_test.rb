@@ -1,18 +1,5 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-module Predicates
-  class Required < Base
-  end
-  class Email < Base
-  end
-  class Length < Base
-  end
-end
-
-class FakeModel < ActiveRecord::Base
-  abstract_class = true
-end
-
 class ActiveRecordExtensionsTest < Test::Unit::TestCase
   def test_module
     assert ActiveRecord::Base.included_modules.include?(ActiveRecord::Predicates)
@@ -20,11 +7,12 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
   end
 
   def test_method_missing
-    assert_nothing_raised {
+    assert_nothing_raised 'creating predicates via method_missing sugar' do
       FakeModel.foo_is_required
       FakeModel.bar_has_a_length
       FakeModel.hello_world_is_an_email
-    }
+      FakeModel.fax_is_a_phone_number
+    end
 
     assert FakeModel.semantic_attributes[:foo].has?(:required)
     assert FakeModel.foo_is_required?
@@ -34,5 +22,8 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
 
     assert FakeModel.semantic_attributes[:hello_world].has?(:email)
     assert FakeModel.hello_world_is_an_email?
+
+    assert FakeModel.semantic_attributes[:fax].has?(:phone_number)
+    assert FakeModel.fax_is_a_phone_number?
   end
 end

@@ -12,6 +12,21 @@ module ActiveRecord
 
     module ClassMethods
       # provides sugary syntax for adding and querying predicates
+      #
+      # the syntax supports the following forms:
+      #   #{attribute}_is_#{predicate}(options = {})
+      #   #{attribute}_is_a_#{predicate}(options = {})
+      #   #{attribute}_is_an_#{predicate}(options = {})
+      #   #{attribute}_has_#{predicate}(options = {})
+      #   #{attribute}_has_a_#{predicate}(options = {})
+      #   #{attribute}_has_an_#{predicate}(options = {})
+      #
+      # if you want to assign a predicate to multiple fields, you may replace the attribute component with the word 'fields', and pass a field list as the first argument, like this:
+      #   fields_is_#{predicate}(fields = [], options = {})
+      #
+      # each form may also have a question mark at the end, to query whether the attribute has the predicate
+      #
+      # in order to avoid clashing with other method_missing setups, this syntax is checked *last*, after all other method_missing metaprogramming attempts have failed.
       def method_missing(name, *args)
         begin
           super
