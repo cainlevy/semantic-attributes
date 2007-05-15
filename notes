@@ -1,0 +1,41 @@
+SEMANTIC ATTRIBUTES
+
+core validations             predicate version
+-----------------------------------------------------
+acceptance_of                Required (diff messages?)
+associated                   Required
+confirmation_of              SameAs
+exclusion_of                 Blacklisted
+format_of                    Pattern (RegExp)
+inclusion_of                 Whitelisted (Enumerated)
+length_of                    Length
+numericality_of              Number
+presence_of                  Required
+size_of                      --
+uniqueness_of                Unique
+
+Required
+--------
+option for how to handle empty string
+automatic handling of associated (and valid status thereof)
+
+generic options
+---------------
+:on           :save, :update, :create
+:if           proc, symbol
+:message      error string
+:allow_nil    ...just use required in addition?
+
+notes
+----------
+* each predicate needs a record reference for yielding to :if procs. that'll also enable the :on method and the Unique and SameAs predicates (and any other multi-attribute predicate)
+* each predicate needs to know what attribute of the record it is attached to (maybe not, depending on how validations are done)
+* messages may need localization and sprintf'ing
+
+human/machine conversion
+------------------------
+m.attribute                        get machine format
+m.attribute_for_human              get human format
+m.attribute=                       set from possibly-human value
+M.humanize(attribute, object)      where 'object' is a string, integer, date, whatever
+M.machinize(attribute, object)     where 'object' is a simple string, array, or hash
