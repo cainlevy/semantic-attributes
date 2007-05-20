@@ -3,11 +3,39 @@ module ActiveRecord
   module Predicates
     def self.included(base)
       base.extend ClassMethods
+      base.validate :validate_predicates
     end
 
     # provides a shortcut to the class's SemanticAttributes object
     def semantic_attributes
       self.class.semantic_attributes
+    end
+
+    # the validation hook that checks all predicates
+    def validate_predicates
+      semantic_attributes.each do |attribute|
+        attribute.predicates.each do |predicate|
+          case predicate.validate_if
+            when Symbol
+            next unless send(predicate.validate_if)
+
+            when Proc
+            next unless predicate.validate_if.call
+          end
+
+          case predicate.validate_on
+            when :create
+            next unless new_record?
+
+            when :update
+            next if new_record?
+          end
+
+          unless predicate.validate(self.send(attribute.field), self)
+            self.errors.add(attribute.field, _(predicate.error_message) % attribute.field)
+          end
+        end
+      end
     end
 
     module ClassMethods

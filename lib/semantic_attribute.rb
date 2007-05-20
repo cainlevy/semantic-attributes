@@ -27,6 +27,11 @@ class SemanticAttribute
     @set << predicate.new(options)
   end
 
+  # The list of predicates, without any shortcuts
+  def predicates
+    @set
+  end
+
   protected
 
   # fully-qualified-name of a predicate

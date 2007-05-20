@@ -7,23 +7,29 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
   end
 
   def test_method_missing
+    @klass = FakeModel.dup
+
     assert_nothing_raised 'creating predicates via method_missing sugar' do
-      FakeModel.foo_is_required
-      FakeModel.bar_has_a_length
-      FakeModel.hello_world_is_an_email
-      FakeModel.fax_is_a_phone_number
+      @klass.foo_is_required
+      @klass.bar_has_a_length
+      @klass.hello_world_is_an_email
+      @klass.fax_is_a_phone_number
     end
 
-    assert FakeModel.semantic_attributes[:foo].has?(:required)
-    assert FakeModel.foo_is_required?
+    assert @klass.semantic_attributes[:foo].has?(:required)
+    assert @klass.foo_is_required?
 
-    assert FakeModel.semantic_attributes[:bar].has?(:length)
-    assert FakeModel.bar_has_length?
+    assert @klass.semantic_attributes[:bar].has?(:length)
+    assert @klass.bar_has_length?
 
-    assert FakeModel.semantic_attributes[:hello_world].has?(:email)
-    assert FakeModel.hello_world_is_an_email?
+    assert @klass.semantic_attributes[:hello_world].has?(:email)
+    assert @klass.hello_world_is_an_email?
 
-    assert FakeModel.semantic_attributes[:fax].has?(:phone_number)
-    assert FakeModel.fax_is_a_phone_number?
+    assert @klass.semantic_attributes[:fax].has?(:phone_number)
+    assert @klass.fax_is_a_phone_number?
+  end
+
+  def test_method_missing_still_works
+    assert_raise NoMethodError do FakeModel.i_do_not_exist end
   end
 end

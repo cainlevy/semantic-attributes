@@ -1,5 +1,7 @@
 # a set of SemanticAttribute objects, which themselves contain Predicates
 class SemanticAttributes
+  include Enumerable
+
   def initialize
     @set = []
   end
@@ -15,5 +17,11 @@ class SemanticAttributes
     semantic_attribute = @set.find {|i| i.field == field}
     self.add(semantic_attribute = SemanticAttribute.new(field)) unless semantic_attribute
     semantic_attribute
+  end
+
+  def each
+    @set.each do |i|
+      yield i
+    end
   end
 end

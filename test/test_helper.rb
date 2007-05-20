@@ -9,4 +9,9 @@ require File.dirname(__FILE__) + '/../init.rb'
 
 class FakeModel < ActiveRecord::Base
   abstract_class = true
+  def self.columns
+    []
+  end
+
+  def _(s); s; end
 end
