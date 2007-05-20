@@ -8,8 +8,6 @@ class ValidationsTest < Test::Unit::TestCase
       attr_accessor :foo
       foo_is_required
     end
-
-    @predicate = Predicates::Base.new
   end
 
   def test_validation_hook
