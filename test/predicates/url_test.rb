@@ -81,4 +81,10 @@ class UrlPredicateTest < Test::Unit::TestCase
     assert_equal 'example.com', @predicate.from_human('example.com')
     assert_equal 'example.com:80', @predicate.from_human('example.com:80')
   end
+
+  def test_error_message
+    assert_equal '%s must be a valid URL.', @predicate.error_message
+    @predicate.error_message = 'foo %s bar'
+    assert_equal 'foo %s bar', @predicate.error_message
+  end
 end

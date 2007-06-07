@@ -9,8 +9,9 @@ class PhoneNumberPredicateTest < Test::Unit::TestCase
     assert_equal 1, @predicate.implied_country_code, 'default implied country code is 1 (north america)'
   end
 
-  def test_to_human_nanp
-    assert_equal '(222) 333-4444', @predicate.to_human('+12223334444')
+  def test_to_human
+    assert_equal '(222) 333-4444', @predicate.to_human('+12223334444'), 'NANP human format'
+    assert_equal '753', @predicate.to_human('753'), 'unknown formats untouched'
   end
 
   def test_validate_nanp
