@@ -10,6 +10,6 @@ class Predicates::Pattern < Predicates::Base
   end
 
   # generic patterns don't have a difference between database formats and human formats, so these methods are stubbed out
-  def to_human(v); end
-  def from_human(v); end
+  def to_human(v); v; end
+  def from_human(v); v; end
 end

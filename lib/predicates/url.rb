@@ -1,6 +1,6 @@
 require 'uri'
 
-# Defines a field as a URL. Does NOT validate according to RFC 1738, but instead validates the common usage.
+# Defines a field as a URL.
 # options:
 #   :domains => [...] - a whitelist of allowed domains (e.g. ['com', 'net', 'org'])
 #   :schemes = [...] - a whitelist of allowed schemes. default is ['http', 'https']
@@ -30,8 +30,6 @@ class Predicates::Url < Predicates::Base
 
   def validate(value, record)
     url = URI.parse(value)
-    url = URI.parse("#{self.implied_scheme}://#{value}") if self.implied_scheme and not (url.scheme and url.host)
-
     domain = url.host ? url.host.split('.').last : nil
 
     valid = true
@@ -45,7 +43,13 @@ class Predicates::Url < Predicates::Base
     false
   end
 
-  # generic patterns don't have a difference between database formats and human formats, so these methods are stubbed out
-  def to_human(v); end
-  def from_human(v); end
+  def to_human(v); v; end
+
+  def from_human(v)
+    url = URI.parse(v)
+    url = URI.parse("#{self.implied_scheme}://#{v}") if self.implied_scheme and not (url.scheme and url.host)
+    url.to_s
+  rescue URI::InvalidURIError
+    v
+  end
 end

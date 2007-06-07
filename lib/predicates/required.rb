@@ -10,6 +10,6 @@ class Predicates::Required < Predicates::Base
     !(value.nil? or (value.respond_to?(:empty?) and value.empty?))
   end
 
-  def to_human; end
-  def from_human; end
+  def to_human(v); v; end
+  def from_human(v); v; end
 end
