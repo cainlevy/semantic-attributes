@@ -47,3 +47,6 @@ problem: @record.errors.full_messages adds the field name ... ugh ... i want to 
 range (like length for numbers)
 enumerated (provides aliasing and value constraints)
 file (with automatic detection of file_column and others)
+us_zip
+us_state
+email
