@@ -1,0 +1,51 @@
+require 'uri'
+
+# Defines a field as a URL. Does NOT validate according to RFC 1738, but instead validates the common usage.
+# options:
+#   :domains => [...] - a whitelist of allowed domains (e.g. ['com', 'net', 'org'])
+#   :schemes = [...] - a whitelist of allowed schemes. default is ['http', 'https']
+#   :ports = [...] - a whitelist of allowed ports. default is [80]
+#   :allow_ip_address => boolean - whether to allow ip addresses in addition to domain names
+#   :implied_scheme = string - what scheme to assume if non is present (default is 'http')
+class Predicates::Url < Predicates::Base
+  attr_accessor :domains
+  attr_accessor :allow_ip_address
+  attr_accessor :schemes
+  attr_accessor :ports
+  attr_accessor :implied_scheme
+
+  def initialize(options = {})
+    defaults = {
+      :allow_ip_address => true,
+      :schemes => ['http', 'https'],
+      :implied_scheme => 'http'
+    }
+
+    super defaults.merge(options)
+  end
+
+  def error_message
+    @error_message || '%s must be a valid URL.'
+  end
+
+  def validate(value, record)
+    url = URI.parse(value)
+    url = URI.parse("#{self.implied_scheme}://#{value}") if self.implied_scheme and not (url.scheme and url.host)
+
+    domain = url.host ? url.host.split('.').last : nil
+
+    valid = true
+    valid &&= (!self.schemes or self.schemes.include? url.scheme)
+    valid &&= (!self.domains or self.domains.include? domain)
+    valid &&= (!self.ports or self.ports.include? url.port)
+    valid &&= (self.allow_ip_address or not url.host =~ /^([0-9]{1,3}\.){3}[0-9]{1,3}$/)
+
+    valid
+  rescue URI::InvalidURIError
+    false
+  end
+
+  # generic patterns don't have a difference between database formats and human formats, so these methods are stubbed out
+  def to_human(v); end
+  def from_human(v); end
+end

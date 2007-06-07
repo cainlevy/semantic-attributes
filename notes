@@ -6,9 +6,9 @@ core validations             predicate version
 acceptance_of                Required (diff messages?)
 associated                   Required
 confirmation_of              SameAs
-exclusion_of                 Blacklisted
+exclusion_of                 Blacklisted (< Enumerated)
 format_of                    Pattern (RegExp)
-inclusion_of                 Whitelisted (Enumerated)
+inclusion_of                 Whitelisted (< Enumerated)
 length_of                    Length
 numericality_of              Number
 presence_of                  Required
@@ -41,3 +41,9 @@ build the basic predicates (validations)
 build the conversion from core validations
 build the humanize/dehumanize routines
 problem: @record.errors.full_messages adds the field name ... ugh ... i want to sprintf instead
+
+=OTHER PREDICATES=
+------------------
+range (like length for numbers)
+enumerated (provides aliasing and value constraints)
+file (with automatic detection of file_column and others)
