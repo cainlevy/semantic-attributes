@@ -12,7 +12,6 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
     assert_nothing_raised 'creating predicates via method_missing sugar' do
       @klass.foo_is_required
       @klass.bar_has_a_length
-      @klass.hello_world_is_an_email
       @klass.fax_is_a_phone_number
     end
 
@@ -21,9 +20,6 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
 
     assert @klass.semantic_attributes[:bar].has?(:length)
     assert @klass.bar_has_length?
-
-    assert @klass.semantic_attributes[:hello_world].has?(:email)
-    assert @klass.hello_world_is_an_email?
 
     assert @klass.semantic_attributes[:fax].has?(:phone_number)
     assert @klass.fax_is_a_phone_number?
