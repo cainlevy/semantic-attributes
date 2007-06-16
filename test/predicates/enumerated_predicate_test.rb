@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class EnumeratedPredicateTest < Test::Unit::TestCase
   def setup
-    @predicate = Predicates::Enumerated.new
+    @predicate = Predicates::Enumerated.new(:foo)
   end
 
   def test_validation

@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class PatternPredicateTest < Test::Unit::TestCase
   def setup
-    @predicate = Predicates::Pattern.new
+    @predicate = Predicates::Pattern.new(:foo)
   end
 
   def test_regexp_pattern

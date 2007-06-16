@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class UrlPredicateTest < Test::Unit::TestCase
   def setup
-    @predicate = Predicates::Url.new
+    @predicate = Predicates::Url.new(:foo)
   end
 
   def test_ip_addresses

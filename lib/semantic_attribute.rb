@@ -24,7 +24,7 @@ class SemanticAttribute
   # accepts the 'short name' of a predicate (e.g. "phone_number" instead of Predicates::PhoneNumber)
   def add(predicate, options = {})
     predicate = class_of predicate
-    @set << predicate.new(options)
+    @set << predicate.new(self.field, options)
   end
 
   # The list of predicates, without any shortcuts

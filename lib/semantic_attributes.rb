@@ -18,6 +18,13 @@ class SemanticAttributes
     self.add(semantic_attribute = SemanticAttribute.new(field)) unless semantic_attribute
     semantic_attribute
   end
+  
+  # method for field lookups which does *not* create the field if it doesn't exist
+  # TODO untested, but covered
+  def include?(field)
+    field = field.to_sym
+    @set.find {|i| i.field == field} ? true : false
+  end
 
   def each
     @set.each do |i|

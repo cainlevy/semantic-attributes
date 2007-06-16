@@ -1,8 +1,17 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class RequiredPredicateTest < Test::Unit::TestCase
+  class ModelA < FakeModel
+    model_b_is_required
+    attr_accessor :model_b
+  end
+  
+  class ModelB < FakeModel
+    attr_accessor :model_a
+  end
+  
   def setup
-    @predicate = Predicates::Required.new
+    @predicate = Predicates::Required.new(:foo)
   end
 
   def test_simple_objects
@@ -24,6 +33,13 @@ class RequiredPredicateTest < Test::Unit::TestCase
   end
 
   def test_associations
-    assert false
+    @model_a = ModelA.new
+    @model_a.model_b = ModelB.new
+    
+    @model_b = ModelB.new
+    @model_b.model_a = ModelA.new
+    
+    assert !@predicate.validate(nil, @model_a)
+    assert @predicate.validate(@model_b, @model_a)
   end
 end

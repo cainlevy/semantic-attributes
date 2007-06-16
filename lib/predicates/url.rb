@@ -14,14 +14,14 @@ class Predicates::Url < Predicates::Base
   attr_accessor :ports
   attr_accessor :implied_scheme
 
-  def initialize(options = {})
+  def initialize(attr, options = {})
     defaults = {
       :allow_ip_address => true,
       :schemes => ['http', 'https'],
       :implied_scheme => 'http'
     }
 
-    super defaults.merge(options)
+    super attr, defaults.merge(options)
   end
 
   def error_message

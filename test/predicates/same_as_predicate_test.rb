@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class SameAsPredicateTest < Test::Unit::TestCase
   def setup
-    @predicate = Predicates::SameAs.new
+    @predicate = Predicates::SameAs.new(:foo)
   end
 
   def test_validation

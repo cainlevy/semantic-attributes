@@ -1,40 +1,5 @@
 SEMANTIC ATTRIBUTES
 
-=Core Validation Conversion=
-core validations             predicate version
------------------------------------------------------
-acceptance_of                Required (diff messages?)
-associated                   Required
-confirmation_of              SameAs
-exclusion_of                 Blacklisted (< Enumerated)
-format_of                    Pattern (RegExp)
-inclusion_of                 Whitelisted (< Enumerated)
-length_of                    Length
-numericality_of              Number
-presence_of                  Required
-size_of                      --
-uniqueness_of                Unique
-
-==generic options==
----------------
-:on           :save, :update, :create
-:if           proc, symbol
-:message      error string
-:allow_nil    ...just use required in addition?
-
-==required==
---------
-option for how to handle empty string
-automatic handling of associated (and valid status thereof)
-
-=human/machine conversion=
-------------------------
-m.attribute                        get machine format
-m.attribute_for_human              get human format
-m.attribute=                       set from possibly-human value
-M.humanize(attribute, object)      where 'object' is a string, integer, date, whatever
-M.machinize(attribute, object)     where 'object' is a simple string, array, or hash
-
 =NEXT=
 --------------
 build the basic predicates (validations)
@@ -45,7 +10,6 @@ problem: @record.errors.full_messages adds the field name ... ugh ... i want to 
 =OTHER PREDICATES=
 ------------------
 range (like length for numbers)
-enumerated (provides aliasing and value constraints)
 file (with automatic detection of file_column and others)
 us_zip (enumerated)
 us_state (enumerated)

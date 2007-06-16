@@ -20,7 +20,7 @@ module Predicates
       @validate_on ||= :both
     end
     def validate_on=(val)
-      raise ArgumentError 'unknown value for :validate_on parameter' unless [:update, :create, :both].include? val
+      raise ArgumentError('unknown value for :validate_on parameter') unless [:update, :create, :both].include? val
       @validate_on = val
     end
 
@@ -29,7 +29,8 @@ module Predicates
     ##
 
     # the initialization method provides quick support for assigning options using existing methods
-    def initialize(options = {})
+    def initialize(attribute_name, options = {})
+      @attribute = attribute_name
       options.each_pair do |k, v|
         self.send("#{k}=", v) if self.respond_to? "#{k}="
       end

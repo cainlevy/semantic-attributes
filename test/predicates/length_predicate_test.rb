@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class LengthPredicateTest < Test::Unit::TestCase
   def setup
-    @predicate = Predicates::Length.new
+    @predicate = Predicates::Length.new(:foo)
   end
 
   def test_range

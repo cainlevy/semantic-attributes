@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class BlacklistedPredicateTest < Test::Unit::TestCase
   def setup
-    @predicate = Predicates::Blacklisted.new
+    @predicate = Predicates::Blacklisted.new(:foo)
   end
 
   def test_validation

@@ -6,9 +6,9 @@
 class Predicates::PhoneNumber < Predicates::Base
   attr_accessor :implied_country_code
 
-  def initialize(options = {})
+  def initialize(attr, options = {})
     options[:implied_country_code] ||= 1
-    super(options)
+    super(attr, options)
   end
 
   def validate(value, record)

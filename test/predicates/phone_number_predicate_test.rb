@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class PhoneNumberPredicateTest < Test::Unit::TestCase
   def setup
-    @predicate = Predicates::PhoneNumber.new
+    @predicate = Predicates::PhoneNumber.new(:foo)
   end
 
   def test_north_american_bias

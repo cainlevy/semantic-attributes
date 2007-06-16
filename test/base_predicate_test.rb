@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/test_helper'
 
 class BasePredicateTest < Test::Unit::TestCase
   def setup
-    @predicate = Predicates::Base.new
+    @predicate = Predicates::Base.new(:foo)
   end
 
   def test_unimplemented_methods
@@ -13,7 +13,7 @@ class BasePredicateTest < Test::Unit::TestCase
   end
 
   def test_initializer_assignment
-    predicate = Predicates::Base.new(:error_message => 'hello world')
+    predicate = Predicates::Base.new(:foo, :error_message => 'hello world')
     assert_equal 'hello world', predicate.error_message
   end
 end
