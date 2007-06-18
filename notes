@@ -4,14 +4,14 @@ SEMANTIC ATTRIBUTES
 --------------
 build the basic predicates (validations)
 build the conversion from core validations
-build the humanize/dehumanize routines
 problem: @record.errors.full_messages adds the field name ... ugh ... i want to sprintf instead
+build enumeration db column awareness (and other discovery methods)
 
 =OTHER PREDICATES=
 ------------------
+unique (and unique within context)
 range (like length for numbers)
 file (with automatic detection of file_column and others)
+email (pattern?)
 us_zip (enumerated)
-us_state (enumerated)
-email
-aliased
+us_state (aliased)
