@@ -9,7 +9,6 @@ build enumeration db column awareness (and other discovery methods)
 
 =OTHER PREDICATES=
 ------------------
-unique (and unique within context)
 range (like length for numbers)
 file (with automatic detection of file_column and others)
 email (pattern?)

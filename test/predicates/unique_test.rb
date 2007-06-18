@@ -4,7 +4,7 @@ class UniquePredicateTest < Test::Unit::TestCase
   class UniqueTestModel < FakeModel
     set_table_name 'table'
     
-    attr_accessor :a, :b, :c # for scope testing
+    attr_accessor :a # for scope testing
     attr_accessor :foo # unique attribute
     cattr_accessor :last_conditions
     cattr_accessor :finder_return
@@ -18,6 +18,7 @@ class UniquePredicateTest < Test::Unit::TestCase
   
   def setup
     @record = UniqueTestModel.new
+    @record.a = 'A'
     @predicate = Predicates::Unique.new(:foo)
   end
   
@@ -35,16 +36,15 @@ class UniquePredicateTest < Test::Unit::TestCase
     assert_equal ['table.foo IS ?', nil], @record.last_conditions, 'can handle nil datatype, and presumably all the other standard types'
     
     # add in scope
-    @predicate.scope = [:a, :b]
-    @record.a = 'A'
-    @record.b = 'B'
+    @predicate.scope = [:a]
     @predicate.validate('bar', @record)
-    assert_equal ['table.foo = ? AND table.a = ? AND table.b = ?', 'bar', 'A', 'B'], @record.last_conditions, 'can handle scope'
+    last_conditions = @record.last_conditions
+    assert_equal ['table.foo = ? AND table.a = ?', 'bar', 'A'], @record.last_conditions, 'can handle scope'
     
     # make it all case insensitive
     @predicate.case_sensitive = false
     @predicate.validate('bar', @record)
-    assert_equal ['LOWER(table.foo) = ? AND LOWER(table.a) = ? AND LOWER(table.b) = ?', 'bar', 'a', 'b'], @record.last_conditions, 'can handle case insensitive uniqueness'
+    assert_equal ['LOWER(table.foo) = ? AND LOWER(table.a) = ?', 'bar', 'a'], @record.last_conditions, 'can handle case insensitive uniqueness'
   end
   
   def test_uniqueness_check

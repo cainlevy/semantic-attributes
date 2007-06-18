@@ -19,11 +19,12 @@ class Predicates::Unique < Predicates::Enumerated
   end
 
   def validate(value, record)
-    conditions_hash = {@attribute => value}
-    self.scope.each { |attribute| conditions_hash[attribute] = record.send(attribute) }
+    fields_values = [[@attribute, value]]
+    self.scope.each { |attribute| fields_values << [attribute, record.send(attribute)] }
     
     conditions_array = ['']
-    conditions_hash.each_pair do |attribute, attribute_value|
+    fields_values.each do |pair|
+      attribute, attribute_value = *pair
       sql = "#{record.class.table_name}.#{attribute}"
       unless self.case_sensitive
         sql = "LOWER(#{sql})"
