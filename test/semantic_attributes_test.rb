@@ -14,9 +14,12 @@ class SemanticAttributesTest < Test::Unit::TestCase
   end
 
   def test_find
+    assert !@set.include?(:a)
+  
     # test retrieving a previously set field
     a = SemanticAttribute.new(:a)
     @set.add a
+    assert @set.include?(:a)
     assert_equal a, @set[:a], 'can find previously set fields'
 
     # test creating a field by requesting it

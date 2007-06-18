@@ -20,7 +20,6 @@ class SemanticAttributes
   end
   
   # method for field lookups which does *not* create the field if it doesn't exist
-  # TODO untested, but covered
   def include?(field)
     field = field.to_sym
     @set.find {|i| i.field == field} ? true : false
