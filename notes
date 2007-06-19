@@ -5,7 +5,6 @@ SEMANTIC ATTRIBUTES
 build the basic predicates (validations)
 build the conversion from core validations
 problem: @record.errors.full_messages adds the field name ... ugh ... i want to sprintf instead
-build enumeration db column awareness (and other discovery methods)
 
 =OTHER PREDICATES=
 ------------------
