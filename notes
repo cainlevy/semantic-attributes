@@ -5,11 +5,12 @@ SEMANTIC ATTRIBUTES
 build the basic predicates (validations)
 build the conversion from core validations
 problem: @record.errors.full_messages adds the field name ... ugh ... i want to sprintf instead
+need to evaluate/test the nil scenario for every predicate
+need a way to assign the same predicate to multiple fields (e.g. 5 required fields)
 
 =OTHER PREDICATES=
 ------------------
 range (like length for numbers)
 file (with automatic detection of file_column and others)
-email (pattern?)
 us_zip (enumerated)
 us_state (aliased)

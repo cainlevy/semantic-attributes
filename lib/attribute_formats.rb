@@ -26,7 +26,11 @@ module ActiveRecord
       if md = method_name.to_s.match(/_for_human$/) and semantic_attributes.include?(md.pre_match)
         self.class.humanize(md.pre_match, self.send(md.pre_match))
       else
-        super
+        begin
+          super
+        rescue
+          raise $!, $!.to_s, caller
+        end
       end
     end
     

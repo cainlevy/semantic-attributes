@@ -28,7 +28,7 @@ class Predicates::Unique < Predicates::Enumerated
       sql = "#{record.class.table_name}.#{attribute}"
       unless self.case_sensitive
         sql = "LOWER(#{sql})"
-        attribute_value.downcase!
+        attribute_value.downcase! unless attribute_value.nil?
       end
       sql << ' ' << record.class.send(:attribute_condition, attribute_value)
       

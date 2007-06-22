@@ -13,3 +13,9 @@ end
 
 ActiveRecord::Base.send(:include, ActiveRecord::Predicates)
 ActiveRecord::Base.send(:include, ActiveRecord::AttributeFormats)
+
+ActiveRecord::Base.class_eval do
+  unless respond_to? :_
+    def _(s); s; end
+  end
+end

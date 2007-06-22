@@ -12,6 +12,4 @@ class FakeModel < ActiveRecord::Base
   def self.columns
     []
   end
-
-  def _(s); s; end
 end
