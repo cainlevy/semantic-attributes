@@ -22,7 +22,7 @@ class Predicates::Email < Predicates::Pattern
   end
 
   def error_message
-    @error_message || '%s must be an email address.'
+    @error_message || ' must be an email address.'
   end
 
   #

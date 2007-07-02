@@ -23,7 +23,7 @@ class EmailPredicateTest < Test::Unit::TestCase
   end
   
   def test_error_message
-    assert_equal '%s must be an email address.', @predicate.error_message
+    assert_equal ' must be an email address.', @predicate.error_message
     @predicate.error_message = 'foo'
     assert_equal 'foo', @predicate.error_message
   end

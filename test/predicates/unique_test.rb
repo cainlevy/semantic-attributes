@@ -25,7 +25,7 @@ class UniquePredicateTest < Test::Unit::TestCase
   def test_defaults
     assert_equal true, @predicate.case_sensitive, 'case sensitive by default'
     assert_equal [], @predicate.scope, 'default scope is empty array'
-    assert_equal "%s has already been taken.", @predicate.error_message
+    assert_equal " has already been taken.", @predicate.error_message
   end
   
   def test_conditions_generation

@@ -19,4 +19,11 @@ class PatternPredicateTest < Test::Unit::TestCase
     assert @predicate.validate('foobar', nil)
     assert @predicate.validate(:bar, nil)
   end
+
+  def test_line_breaks
+    @predicate.like = /^hello world$/
+    assert @predicate.validate("malicious\nhello world\ntext", nil)
+    @predicate.like = /\Ahello world\Z/
+    assert !@predicate.validate("malicious\nhello world\ntext", nil)
+  end
 end

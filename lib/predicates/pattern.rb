@@ -1,5 +1,12 @@
 # Provides a generic pattern predicate, which is extended and used by other pattern-based validations.
 #
+# WARNING: If you define a pattern, you probably want to use \A and \Z instead of ^ and $. The latter anchors are per-line, which means that multi-line strings can sneak stuff past your regular expression. For example:
+#
+#   @predicate.like = /^hello world$/
+#   assert @predicate.validate("malicious\nhello world\ntext", nil), 'must match only one line'
+#   @predicate.like = /\Ahello world\Z/
+#   assert !@predicate.validate("malicious\nhello world\ntext", nil), 'must match entire string'
+#
 # ==Options
 # * :like - a regular expression matching pattern
 #

@@ -10,7 +10,7 @@
 #   end
 class Predicates::Required < Predicates::Base
   def error_message
-    @error_message || '%s is required.'
+    @error_message || ' is required.'
   end
 
   def validate(value, record)

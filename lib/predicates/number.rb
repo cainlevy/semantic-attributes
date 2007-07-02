@@ -7,7 +7,7 @@ class Predicates::Number < Predicates::Base
   attr_accessor :integer
 
   def error_message
-    @error_message || "%s must be a number."
+    @error_message || " must be a number."
   end
 
   def validate(value, record)

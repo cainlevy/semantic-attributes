@@ -37,7 +37,7 @@ Now that attributes have high-level semantic meaning, you can get other value-ad
   => '(222) 333-4444'
 
 ==Status
-
+Stable, but not ready for public release. It needs to be used by more people than myself before I'm comfortable calling it done.
 
 ==See Also
 * Predicates

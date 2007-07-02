@@ -51,6 +51,6 @@ class Predicates::PhoneNumber < Predicates::Base
   end
 
   class Patterns
-    NANP = /^\+1([2-9][0-8][0-9])([2-9][0-9]{2})([0-9]{4})$/
+    NANP = /\A\+1([2-9][0-8][0-9])([2-9][0-9]{2})([0-9]{4})\Z/
   end
 end

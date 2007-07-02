@@ -25,7 +25,7 @@ class Predicates::Range < Predicates::Number
   attr_accessor :inclusive
 
   def error_message
-    @error_message || "%s must be #{range_description}."
+    @error_message || " must be #{range_description}."
   end
 
   def validate(value, record)

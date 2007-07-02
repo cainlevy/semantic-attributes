@@ -24,7 +24,7 @@ class Predicates::Length < Predicates::Base
   attr_accessor :exactly
 
   def error_message
-    @error_message || "%s must be #{range_description} characters long."
+    @error_message || " must be #{range_description} characters long."
   end
 
   def validate(value, record)
