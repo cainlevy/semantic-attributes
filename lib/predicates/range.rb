@@ -1,8 +1,15 @@
 # Lets you declare a range for a numeric value.
-# options:
-# * :above
-# * :below
-# * :range
+#
+# ==Options
+# * :above [integer, float] - when the number has a minimum
+# * :below [integer, float] - when the number has a maximum
+# * :range [range] - when the number has a minimum and a maximum
+# * :inclusive [boolean, default: false] - if your maximum or minimum is also an allowed value. Does not work with :range.
+#
+# ==Examples
+#   field_has_a_range :range => 1..5
+#   field_has_a_range :above => 4.5
+#   field_has_a_range :below => 4.5, :inclusive => true
 class Predicates::Range < Predicates::Number
   # when the range has just a min
   attr_accessor :above

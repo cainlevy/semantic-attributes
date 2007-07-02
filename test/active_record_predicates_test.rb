@@ -16,13 +16,13 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
     end
 
     assert @klass.semantic_attributes[:foo].has?(:required)
-    assert @klass.foo_is_required?
+    assert_equal true, @klass.foo_is_required?
 
     assert @klass.semantic_attributes[:bar].has?(:length)
-    assert @klass.bar_has_length?
+    assert_equal true, @klass.bar_has_length?
 
     assert @klass.semantic_attributes[:fax].has?(:phone_number)
-    assert @klass.fax_is_a_phone_number?
+    assert_equal true, @klass.fax_is_a_phone_number?
   end
 
   def test_method_missing_still_works

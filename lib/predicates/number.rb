@@ -1,4 +1,7 @@
 # Describes an attribute as a number.
+#
+# ==Example
+#   field_is_a_number :integer => true
 class Predicates::Number < Predicates::Base
   # whether to require an integer value
   attr_accessor :integer

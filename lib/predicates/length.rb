@@ -1,9 +1,15 @@
 # Lets you declare a min/max/exact length for something. This works for arrays and strings both.
-# options:
-# * :above
-# * :below
-# * :range
-# * :exactly
+#
+# ==Options
+# * :above [integer] - when the attribute has a minimum
+# * :below [integer] - when the attribute has a maximum
+# * :range [range] - when the attribute has a minimum and a maximum
+# * :exactly [integer] - when the attribute must be exactly some length
+#
+# ==Examples
+#   field_has_length :exactly => 3
+#   field_has_length :above => 5
+#   field_has_length :range => 4..8
 class Predicates::Length < Predicates::Base
   # when the length has just a min
   attr_accessor :above

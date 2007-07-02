@@ -3,4 +3,43 @@ SemanticAttributes
 
 -by Lance Ivy, 2007
 
-See http://code.google.com/p/semanticattributes/ for more information.
+http://code.google.com/p/semanticattributes/
+
+==Problem
+Attributes in ActiveRecord have no semantic meaning. Validations only describe what to _do_ with a field, not what the field _means_. But if you know what the field means, then you (and other plugins) can easily infer what to do! So the built-in validations are really tackling the problem backwards.
+
+==Solution
+Allow the developer to create meaning for ActiveRecord attributes by assigning Predicates in a natural, declarative syntax. Allow the developer (and other plugins) to reflect on predicates and intelligently adapt behavior.
+
+Now that attributes have high-level semantic meaning, you can get other value-added behavior like machine/human formats. Your code needs to deal with normalized or code-like values, but humans need to see something readable. For common patterns (like phone numbers) SemanticAttributes can handle this for you automatically.
+
+==Example
+
+  class User < ActiveRecord::Base
+    name_is_required
+    email_is_required
+    email_is_an_email :with_mx_record => true
+    home_page_is_a_url :domains => ['com', 'net', 'org'], :allow_ip_address => false
+    mobile_is_a_phone_number
+  end
+
+  >> User.name_is_required?
+  => true
+  >> User.mobile_is_required?
+  => false
+  >> User.semantic_attributes[:home_page].get(:url).domains
+  => ['com', 'net', 'org']
+  >> user = User.new
+  >> user.mobile = '222 333.4444'
+  >> user.mobile
+  => '+12223334444'
+  >> user.mobile_for_human
+  => '(222) 333-4444'
+
+==Status
+
+
+==See Also
+* Predicates
+* ActiveRecord::Predicates::ClassMethods (see #method_missing)
+* ActiveRecord::AttributeFormats

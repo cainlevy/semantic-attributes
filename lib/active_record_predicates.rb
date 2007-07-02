@@ -39,9 +39,9 @@ module ActiveRecord
     end
 
     module ClassMethods
-      # provides sugary syntax for adding and querying predicates
+      # Provides sugary syntax for adding and querying predicates
       #
-      # the syntax supports the following forms:
+      # The syntax supports the following forms:
       #   #{attribute}_is_#{predicate}(options = {})
       #   #{attribute}_is_a_#{predicate}(options = {})
       #   #{attribute}_is_an_#{predicate}(options = {})
@@ -49,12 +49,12 @@ module ActiveRecord
       #   #{attribute}_has_a_#{predicate}(options = {})
       #   #{attribute}_has_an_#{predicate}(options = {})
       #
-      # if you want to assign a predicate to multiple fields, you may replace the attribute component with the word 'fields', and pass a field list as the first argument, like this:
-      #   fields_is_#{predicate}(fields = [], options = {})
+      # If you want to assign a predicate to multiple fields, you may replace the attribute component with the word 'fields', and pass a field list as the first argument, like this:
+      #   fields_are_#{predicate}(fields = [], options = {})
       #
-      # each form may also have a question mark at the end, to query whether the attribute has the predicate
+      # Each form may also have a question mark at the end, to query whether the attribute has the predicate
       #
-      # in order to avoid clashing with other method_missing setups, this syntax is checked *last*, after all other method_missing metaprogramming attempts have failed.
+      # In order to avoid clashing with other method_missing setups, this syntax is checked *last*, after all other method_missing metaprogramming attempts have failed.
       def method_missing(name, *args)
         begin
           super
@@ -63,12 +63,14 @@ module ActiveRecord
             options = args.pop if args.last.is_a? Hash
             fields = ($1 == 'fields') ? args : [$1]
             predicate = $4
-            method = ($5 == '?') ? :has? : :add
-
-            args = [predicate]
-            args << options if method == :add and options
-            fields.each do |field|
-              self.semantic_attributes[field].send(method, *args)
+            if $5 == '?'
+              self.semantic_attributes[fields.first].has? predicate
+            else
+              args = [predicate]
+              args << options if options
+              fields.each do |field|
+                self.semantic_attributes[field].add *args
+              end
             end
           else
             raise

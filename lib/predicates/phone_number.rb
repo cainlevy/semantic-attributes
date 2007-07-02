@@ -1,8 +1,10 @@
-# Defines a field as a phone number.
-# Currently it assumes the phone number fits the North American Numbering Plan.
-# Future support of other plans will be implemented by calling code, e.g. +44 (UK) or +33 (FR). These will act as triggers for localized phone number validation.
-# Options
-# * implied_country_code => integer - [default: 1 - NANP (north america)]
+# Defines a field as a phone number. Currently it assumes the phone number fits the North American Numbering Plan. Future support of other plans will be implemented by calling code, e.g. +44 (UK) or +33 (FR). These will act as triggers for localized phone number validation.
+#
+# ==Options
+# * implied_country_code [integer, default: 1 (North America)]
+#
+# ==Example
+#   field_is_a_phone_number
 class Predicates::PhoneNumber < Predicates::Base
   attr_accessor :implied_country_code
 

@@ -1,12 +1,20 @@
 require 'uri'
 
 # Defines a field as a URL.
-# options:
-#   :domains => [...] - a whitelist of allowed domains (e.g. ['com', 'net', 'org'])
-#   :schemes = [...] - a whitelist of allowed schemes. default is ['http', 'https']
-#   :ports = [...] - a whitelist of allowed ports. default is [80]
-#   :allow_ip_address => boolean - whether to allow ip addresses in addition to domain names
-#   :implied_scheme = string - what scheme to assume if non is present (default is 'http')
+#
+# ==Options
+#   :domains [array, default nil] - a whitelist of allowed domains (e.g. ['com', 'net', 'org']). set to nil to allow all domains.
+#   :schemes [array, default ['http', 'https']] - a whitelist of allowed schemes. set to nil to allow all schemes.
+#   :ports [array, default nil] - a whitelist of allowed ports. set to nil to allow all ports.
+#   :allow_ip_address [boolean, default true] - whether to allow ip addresses instead to domain names.
+#   :implied_scheme [string, symbol, default 'http'] - what scheme to assume if non is present.
+#
+# ==Examples
+#   # if you need an ftp url
+#   field_is_an_url :schemes => ['ftp']
+#
+#   # if you want to require https
+#   field_is_an_url :schemes => ['https'], :implied_scheme => 'https', :ports => [443]
 class Predicates::Url < Predicates::Base
   attr_accessor :domains
   attr_accessor :allow_ip_address
@@ -42,8 +50,6 @@ class Predicates::Url < Predicates::Base
   rescue URI::InvalidURIError
     false
   end
-
-  def to_human(v); v; end
 
   def from_human(v)
     url = URI.parse(v)

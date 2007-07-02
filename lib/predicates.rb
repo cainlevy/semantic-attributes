@@ -1,4 +1,10 @@
-# namespace for the possible predicates. any class in this namespace (besides Base) may be added as a predicate.
+# Namespace for the possible predicates. Any class in this namespace (besides Base) may be added as a predicate.
+#
+# All predicates that inherit from Base get the following options:
+#
+#   :error_message   Feedback for the user if the validation fails. Remember that Rails will prefix the attribute name.
+#   :validate_if     Restricts when the validation can happen. If it returns false, validation will not happen. May be a proc (with the record object as the argument) or a symbol that names a method on the record to call.
+#   :validate_on     When to do the validation, during :update, :create, or both (default).
 module Predicates
   # the base class for all predicates. defines the interface and standard settings.
   class Base
@@ -44,13 +50,13 @@ module Predicates
     # define this in the concrete class to provide a method for converting from a storage format to a human readable format
     # this is good for presenting your clean, logical data in a way that people like to read.
     def to_human(value)
-      raise NotImplementedError
+      value
     end
 
     # define this in the concrete class to provide a method for converting from a human readable format to a storage format.
     # this is good for letting people do fuzzy searches, or add values through a form in a variety of formats, but still retain consistent data.
     def from_human(value)
-      raise NotImplementedError
+      value
     end
   end
 end
