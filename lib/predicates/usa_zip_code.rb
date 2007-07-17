@@ -3,15 +3,19 @@
 # Validates via regular expression.
 #
 # ==Options
-# * :extended [boolean, default false] - whether to allow the extended (+4) zip code format
+# * :extended [:allowed, :required, or false (default)] - whether to allow (or require!) the extended (+4) zip code format
 class Predicates::UsaZipCode < Predicates::Pattern
-  attr_writer :extended
-  def extended?
-    @extended ? true : false
-  end
+  attr_accessor :extended
 
   def like
-    @like ||= /\A[0-9]{5}#{'(-[0-9]{4})?' if extended?}\Z/
+    return @like unless @like.nil?
+    pattern = '[0-9]{5}'
+    if extended
+      pattern += '(-[0-9]{4})'
+      pattern += '?' unless extended == :required
+    end
+
+    @like = /\A#{pattern}\Z/
   end
   undef_method :like=
 
