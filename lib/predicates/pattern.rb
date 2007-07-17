@@ -16,7 +16,7 @@ class Predicates::Pattern < Predicates::Base
   attr_accessor :like
 
   def validate(value, record)
-    value = value.to_s if value.instance_of? Symbol
+    value = value.to_s if [Symbol, Fixnum].include?(value.class)
     value.match(self.like)
   end
 end
