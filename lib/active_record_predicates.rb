@@ -32,7 +32,7 @@ module ActiveRecord
           end
 
           unless predicate.validate(self.send(attribute.field), self)
-            self.errors.add(attribute.field, _(predicate.error_message) % attribute.field)
+            self.errors.add(attribute.field, _(predicate.error_message))
           end
         end
       end
