@@ -16,11 +16,20 @@ class Predicates::Required < Predicates::Base
   def validate(value, record)
     valid = true
     if value.kind_of?(ActiveRecord::Base) and value.new_record?
-      valid &&= value.valid?
+      unless recursion_stack.include? value
+        recursion_stack << record
+        valid &&= value.valid?
+        recursion_stack.delete(record)
+      end
     else
       valid &&= (!value.nil?)
       valid &&= !(value.respond_to?(:empty?) and value.empty?)
     end
     valid
   end
+
+  private
+
+  cattr_accessor :recursion_stack
+  @@recursion_stack = []
 end
