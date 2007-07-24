@@ -28,7 +28,7 @@ class ValidationsTest < Test::Unit::TestCase
 
     assert(@record.class.foo_is_required? && @record.foo.nil?, 'foo is required and nil')
     assert(!@record.valid?, 'validation fails')
-    assert_equal('[ is required.]', @record.errors[:foo], 'error message is registered; also, localization worked')
+    assert_equal('[is required.]', @record.errors[:foo], 'error message is registered; also, localization worked')
   end
 
   def test_validate_if_symbol
