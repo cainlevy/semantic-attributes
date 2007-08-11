@@ -9,7 +9,7 @@ class Predicates::Enumerated < Predicates::Base
   attr_accessor :options
 
   def error_message
-    @error_message || " is not an allowed option."
+    @error_message || "is not an allowed option."
   end
 
   def validate(value, record)

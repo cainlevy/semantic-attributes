@@ -6,6 +6,7 @@ class ValidationsTest < Test::Unit::TestCase
     @record.semantic_attributes.instance_variable_set('@set', []) # todo: this attempts to cleanup ... is there a better way to setup? singletons or something?
     @record.class.module_eval do
       attr_accessor :foo
+      attr_accessor :bar
       foo_is_required
     end
   end
@@ -77,5 +78,53 @@ class ValidationsTest < Test::Unit::TestCase
       @record.semantic_attributes['foo'].get('required').validate_on = :create
     end
     assert @record.valid?, 'validation skipped when validate_on :create and !new_record?'
+  end
+
+  # We're adding the Base predicate to an otherwise-clean attribute. Normally
+  # the Base#validate routine raises a NotImplementedError exception. This
+  # actually lets us test when the validate routine is being bypassed completely.
+  def test_allow_empty
+    @record.foo = 'satisfied'
+    @record.semantic_attributes['bar'].add 'base'
+    assert @record.semantic_attributes['bar'].get('base').allow_empty?
+    v = nil
+
+    @record.bar = nil
+    assert_nothing_raised { v = @record.valid? }
+    assert v, @record.errors.full_messages
+
+    @record.bar = ''
+    assert_nothing_raised { v = @record.valid? }
+    assert v, @record.errors.full_messages
+
+    @record.bar = []
+    assert_nothing_raised { v = @record.valid? }
+    assert v, @record.errors.full_messages
+
+    @record.bar = 'something not empty or nil'
+    assert_raise NotImplementedError do v = @record.valid? end
+  end
+
+  # Same methodology as test_allow_empty
+  def test_disallow_empty
+    @record.foo = 'satisfied'
+    @record.semantic_attributes['bar'].add 'base', :or_empty => false
+    assert !@record.semantic_attributes['bar'].get('base').allow_empty?
+    v = nil
+
+    @record.bar = nil
+    assert_nothing_raised { v = @record.valid? }
+    assert !v
+
+    @record.bar = ''
+    assert_nothing_raised { v = @record.valid? }
+    assert !v
+
+    @record.bar = []
+    assert_nothing_raised { v = @record.valid? }
+    assert !v
+
+    @record.bar = 'something not empty or nil'
+    assert_raise NotImplementedError do v = @record.valid? end
   end
 end

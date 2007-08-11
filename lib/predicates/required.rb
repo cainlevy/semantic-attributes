@@ -1,6 +1,4 @@
-# Marks an attribute as required.
-#
-# You can require associations by name. Currently only works for singular associations (has_one, belongs_to).
+# Marks an attribute as being required. This is really just a shortcut for using the or_empty? setting.
 #
 # Example:
 #   class Comment < ActiveRecord::Base
@@ -9,27 +7,17 @@
 #     owner_is_required
 #   end
 class Predicates::Required < Predicates::Base
+  # this permanently sets :or_empty to false
+  def allow_empty?
+    false
+  end
+
   def error_message
     @error_message || 'is required.'
   end
 
   def validate(value, record)
-    valid = true
-    if value.kind_of?(ActiveRecord::Base) and value.new_record?
-      unless recursion_stack.include? value
-        recursion_stack << record
-        valid &&= value.valid?
-        recursion_stack.delete(record)
-      end
-    else
-      valid &&= (!value.nil?)
-      valid &&= !(value.respond_to?(:empty?) and value.empty?)
-    end
-    valid
+    # if we get here then it must not be empty/nil, so pass.
+    true
   end
-
-  private
-
-  cattr_accessor :recursion_stack
-  @@recursion_stack = []
 end

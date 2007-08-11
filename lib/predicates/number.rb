@@ -34,7 +34,6 @@ class Predicates::Number < Predicates::Base
   end
 
   def validate(value, record)
-
     # check data type
     valid = if self.integer
         # if it must be an integer, do a regexp check for digits only

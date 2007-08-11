@@ -31,7 +31,14 @@ module ActiveRecord
             next if new_record?
           end
 
-          unless predicate.validate(self.send(attribute.field), self)
+          value = self.send(attribute.field)
+          if (value.nil? or (value.respond_to? :empty? and value.empty?))
+            # it's empty, so add an error or not but either way move along
+            self.errors.add(attribute.field, _(predicate.error_message)) unless predicate.allow_empty?
+            next
+          end
+
+          unless predicate.validate(value, self)
             self.errors.add(attribute.field, _(predicate.error_message))
           end
         end

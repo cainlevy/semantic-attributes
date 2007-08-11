@@ -5,6 +5,7 @@
 #   :error_message   Feedback for the user if the validation fails. Remember that Rails will prefix the attribute name.
 #   :validate_if     Restricts when the validation can happen. If it returns false, validation will not happen. May be a proc (with the record object as the argument) or a symbol that names a method on the record to call.
 #   :validate_on     When to do the validation, during :update, :create, or both (default).
+#   :or_empty        Whether to allow empty/nil values during validation (default: true)
 module Predicates
   # the base class for all predicates. defines the interface and standard settings.
   class Base
@@ -22,12 +23,16 @@ module Predicates
 
     # defines when to do the validation - during :update or :create (default is both, signified by absence of specification)
     # options: :update, :create, and :both
-    def validate_on
-      @validate_on ||= :both
-    end
+    attr_reader :validate_on
     def validate_on=(val)
       raise ArgumentError('unknown value for :validate_on parameter') unless [:update, :create, :both].include? val
       @validate_on = val
+    end
+
+    # whether to allow empty (and nil) values during validation (default: true)
+    attr_writer :or_empty
+    def allow_empty?
+      @or_empty ? true : false
     end
 
     ##
@@ -37,6 +42,8 @@ module Predicates
     # the initialization method provides quick support for assigning options using existing methods
     def initialize(attribute_name, options = {})
       @attribute = attribute_name
+      @validate_on = :both
+      @or_empty = true
       options.each_pair do |k, v|
         self.send("#{k}=", v) if self.respond_to? "#{k}="
       end

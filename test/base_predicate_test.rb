@@ -16,4 +16,16 @@ class BasePredicateTest < Test::Unit::TestCase
     predicate = Predicates::Base.new(:foo, :error_message => 'hello world')
     assert_equal 'hello world', predicate.error_message
   end
+
+  def test_default_values
+    assert @predicate.allow_empty?, "allow empty/nil values by default"
+    assert_equal :both, @predicate.validate_on, "validate on create and update by default"
+  end
+
+  def test_or_empty
+    predicate = Predicates::Base.new(:foo, :or_empty => true)
+    assert predicate.allow_empty?
+    predicate = Predicates::Base.new(:foo, :or_empty => false)
+    assert !predicate.allow_empty?
+  end
 end
