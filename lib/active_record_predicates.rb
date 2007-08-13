@@ -20,7 +20,7 @@ module ActiveRecord
             next unless send(predicate.validate_if)
 
             when Proc
-            next unless predicate.validate_if.call
+            next unless predicate.validate_if.call(self)
           end
 
           case predicate.validate_on
