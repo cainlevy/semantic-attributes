@@ -18,7 +18,7 @@ class SemanticAttributes
     self.add(semantic_attribute = SemanticAttribute.new(field)) unless semantic_attribute
     semantic_attribute
   end
-  
+
   # method for field lookups which does *not* create the field if it doesn't exist
   def include?(field)
     field = field.to_sym
@@ -29,5 +29,10 @@ class SemanticAttributes
     @set.each do |i|
       yield i
     end
+  end
+
+  private
+  def initialize_copy(from)
+    @set = from.instance_variable_get('@set').clone
   end
 end

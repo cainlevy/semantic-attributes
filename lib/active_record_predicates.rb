@@ -4,11 +4,8 @@ module ActiveRecord
     def self.included(base)
       base.extend ClassMethods
       base.validate :validate_predicates
-    end
-
-    # provides a shortcut to the class's SemanticAttributes object
-    def semantic_attributes
-      self.class.semantic_attributes
+      base.write_inheritable_attribute :semantic_attributes, SemanticAttributes.new
+      base.class_inheritable_reader :semantic_attributes
     end
 
     # the validation hook that checks all predicates
@@ -83,11 +80,6 @@ module ActiveRecord
             raise
           end
         end
-      end
-
-      # interface with the SemanticAttributes object
-      def semantic_attributes
-        @semantic_attributes ||= SemanticAttributes.new
       end
     end
   end
