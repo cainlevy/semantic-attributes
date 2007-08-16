@@ -1,7 +1,7 @@
 # Describes a regular expression pattern for email addresses, using RFC822.
 #
 # ==Options
-# * :with_mx_record [boolean, default false] - whether to verify the email's domain using a dns lookup for an mx record. This requires the Unix `dig` command.
+# * :with_mx_record [boolean, default false] - whether to verify the email's domain using a dns lookup for an mx record. This requires the Unix `dig` command. In Debian this is part of the dnsutils package.
 #
 # == Example
 #   field_is_an_email :with_mx_record => true
