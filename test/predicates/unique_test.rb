@@ -36,7 +36,7 @@ class UniquePredicateTest < Test::Unit::TestCase
     assert_equal ['table.foo IS ?', nil], @record.last_conditions, 'can handle nil datatype, and presumably all the other standard types'
 
     # add in scope
-    @predicate.scope = [:a]
+    @predicate.scope = :a
     @predicate.validate('bar', @record)
     last_conditions = @record.last_conditions
     assert_equal ['table.foo = ? AND table.a = ?', 'bar', 'A'], @record.last_conditions, 'can handle scope'

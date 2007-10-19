@@ -25,7 +25,7 @@ class Predicates::Unique < Predicates::Base
 
   def validate(value, record)
     fields_values = [[@attribute, value]]
-    self.scope.each { |attribute| fields_values << [attribute, record.send(attribute)] }
+    [scope].flatten.each { |attribute| fields_values << [attribute, record.send(attribute)] }
 
     conditions_array = ['']
     fields_values.each do |pair|
