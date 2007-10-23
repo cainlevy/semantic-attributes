@@ -1,6 +1,6 @@
 # Marks an attribute as being an association. Has options for controlling how many associated objects there can be.
 #
-# You can require associations by name. Currently only works for singular associations (has_one, belongs_to).
+# You can require associations by name.
 #
 # Example:
 #   class Comment < ActiveRecord::Base

@@ -6,13 +6,13 @@ class SameAsPredicateTest < Test::Unit::TestCase
   end
 
   def test_validation
-    @predicate.method = :foo
+    @predicate.method = :bar
 
-    klass = Struct.new('SomeModel', :foo)
+    klass = Struct.new('SomeModel', :bar)
     record = klass.new
-    record.foo = 'bar'
+    record.bar = 'something'
 
-    assert @predicate.validate('bar', record)
+    assert @predicate.validate('something', record)
     assert !@predicate.validate(nil, record)
     assert !@predicate.validate(5, record)
   end
