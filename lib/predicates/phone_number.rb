@@ -13,6 +13,10 @@ class Predicates::PhoneNumber < Predicates::Base
     super(attr, options)
   end
 
+  def error_message
+    @error_message ||= "must be a phone number."
+  end
+
   def validate(value, record)
     case value
       when Patterns::NANP
