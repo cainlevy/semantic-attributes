@@ -33,7 +33,8 @@ class UrlPredicateTest < Test::Unit::TestCase
     assert @predicate.validate('http://example.com', nil)
     assert @predicate.validate('http://example.co.uk', nil)
     assert @predicate.validate('http://example.xyz', nil)
-    assert @predicate.validate('http://example', nil)
+    assert !@predicate.validate('http://example', nil)
+    assert !@predicate.validate('http://example.', nil)
     assert @predicate.validate('http://127.0.0.1', nil)
 
     @predicate.domains = ['com', 'net', 'org']
@@ -42,6 +43,7 @@ class UrlPredicateTest < Test::Unit::TestCase
     assert !@predicate.validate('http://example.co.uk', nil)
     assert !@predicate.validate('http://example.xyz', nil)
     assert !@predicate.validate('http://example', nil)
+    assert !@predicate.validate('http://example.', nil)
     assert !@predicate.validate('http://127.0.0.1', nil)
   end
 

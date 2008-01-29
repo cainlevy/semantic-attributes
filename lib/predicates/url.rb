@@ -38,11 +38,12 @@ class Predicates::Url < Predicates::Base
 
   def validate(value, record)
     url = URI.parse(value)
-    domain = url.host ? url.host.split('.').last : nil
+    tld = (url.host && url.host.match(/\..+\Z/)) ? url.host.split('.').last : nil
 
     valid = true
+    valid &&= (!tld.blank?)
     valid &&= (!self.schemes or self.schemes.include? url.scheme)
-    valid &&= (!self.domains or self.domains.include? domain)
+    valid &&= (!self.domains or self.domains.include? tld)
     valid &&= (!self.ports or self.ports.include? url.port)
     valid &&= (self.allow_ip_address or not url.host =~ /^([0-9]{1,3}\.){3}[0-9]{1,3}$/)
 
