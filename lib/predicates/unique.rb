@@ -14,7 +14,7 @@ class Predicates::Unique < Predicates::Base
   def initialize(attribute, options = {})
     defaults = {
       :scope => [],
-      :case_sensitive => true
+      :case_sensitive => false
     }
     super attribute, defaults.merge(options)
   end
