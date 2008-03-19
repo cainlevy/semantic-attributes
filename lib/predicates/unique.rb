@@ -28,17 +28,16 @@ class Predicates::Unique < Predicates::Base
     [scope].flatten.each { |attribute| fields_values << [attribute, record.send(attribute)] }
 
     conditions_array = ['']
-    fields_values.each do |pair|
-      attribute, attribute_value = *pair
-      sql = "#{record.class.table_name}.#{attribute}"
+    fields_values.each do |(attribute, attribute_value)|
+      field_sql = "#{record.class.table_name}.#{attribute}"
       unless self.case_sensitive
-        sql = "LOWER(#{sql})"
+        field_sql = "LOWER(#{field_sql})"
         attribute_value.downcase! unless attribute_value.nil?
       end
-      sql << ' ' << record.class.send(:attribute_condition, attribute_value)
+      field_sql << ' ' << record.class.send(:attribute_condition, attribute_value)
 
       conditions_array.first << ' AND ' unless conditions_array.first.empty?
-      conditions_array.first << sql
+      conditions_array.first << field_sql
       conditions_array << attribute_value
     end
 

@@ -1,0 +1,43 @@
+require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
+
+class UniquePredicateTest < Test::Unit::TestCase
+  def setup
+    User.stub_semantics_with(:login => :unique)
+    @predicate = User.semantic_attributes[:login].get(:unique)
+
+    @fred = User.new(:first_name => 'fred', :last_name => 'flat')
+  end
+
+  def test_defaults
+    assert_equal false, @predicate.case_sensitive, 'case insensitive by default'
+    assert_equal [], @predicate.scope, 'default scope is empty array'
+    assert_equal "has already been taken.", @predicate.error_message
+  end
+
+  def test_uniqueness_validation_scoping
+    assert !@predicate.validate(users(:bob).login, @fred)
+    @predicate.scope = :last_name
+    assert @predicate.validate(users(:bob).login, @fred), "when scoped, it becomes valid"
+  end
+
+  def test_case_sensitive_uniqueness_validation
+    @predicate.case_sensitive = true
+
+    assert !@predicate.validate(users(:bob).login, @fred), "case match means not unique"
+    assert @predicate.validate(users(:bob).login.upcase, @fred), "case mismatch means unique"
+  end
+
+  def test_case_insensitive_uniqueness_validation
+    @predicate.case_sensitive = false
+
+    assert !@predicate.validate(users(:bob).login, @fred), "case match means not unique"
+    assert !@predicate.validate(users(:bob).login.upcase, @fred), "case mismatch is still not unique"
+  end
+
+  def test_uniqueness_validation_excludes_self
+    @fred.update_attribute(:login, 'fred')
+
+    assert @predicate.validate(@fred.login, @fred), "still valid after being saved"
+    assert !@predicate.validate(users(:bob).login, @fred), "but still not valid when duplicating a *different* record"
+  end
+end

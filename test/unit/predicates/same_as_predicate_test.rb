@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
 class SameAsPredicateTest < Test::Unit::TestCase
   def setup
@@ -8,11 +8,11 @@ class SameAsPredicateTest < Test::Unit::TestCase
   def test_validation
     @predicate.method = :bar
 
-    klass = Struct.new('SomeModel', :bar)
-    record = klass.new
-    record.bar = 'something'
+    record = mock()
+    record.stubs(:bar).returns("something")
 
     assert @predicate.validate('something', record)
+    assert !@predicate.validate('something else', record)
     assert !@predicate.validate(nil, record)
     assert !@predicate.validate(5, record)
   end

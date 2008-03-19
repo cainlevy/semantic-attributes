@@ -18,13 +18,11 @@ module ActiveRecord #:nodoc:
 
       # this method is private
       base.class_eval do
-        unless private_instance_methods.include? 'write_attribute_without_formats' # was having stack problems when running tests
         def write_attribute_with_formats(attr, value)
           value = self.class.machinize(attr, value) if semantic_attributes and semantic_attributes.include? attr
           write_attribute_without_formats attr, value
         end
         alias_method_chain :write_attribute, :formats
-        end
       end
     end
 

@@ -1,0 +1,20 @@
+bob:
+  id: 1
+  login: bob
+  first_name: Bobby
+  last_name: Billiards
+sue:
+  id: 2
+  login: sue
+  first_name: Sue
+  last_name: Swagger
+george:
+  id: 3
+  login: george
+  first_name: George
+  last_name: Ginormous
+michael:
+  id: 4
+  login: michael
+  first_name: Michael
+  last_name: Mindful

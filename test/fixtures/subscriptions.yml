@@ -1,0 +1,20 @@
+bob_is_free:
+  id: 1
+  name: Bob/Free
+  service_id: 1
+  user_id: 1
+sue_is_premium:
+  id: 2
+  name: Sue/Premium
+  service_id: 2
+  user_id: 2
+george_is_free:
+  id: 3
+  name: George/Free
+  service_id: 1
+  user_id: 3
+michael_is_free:
+  id: 4
+  name: Michael/Free
+  service_id: 1
+  user_id: 4

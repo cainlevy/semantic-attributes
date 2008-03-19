@@ -1,0 +1,3 @@
+semantic_attributes_test:
+  adapter: sqlite3
+  database: ':memory:'

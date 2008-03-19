@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class SemanticAttributesTest < Test::Unit::TestCase
   def setup
@@ -15,14 +15,15 @@ class SemanticAttributesTest < Test::Unit::TestCase
 
   def test_find
     assert !@set.include?(:a)
-  
+
     # test retrieving a previously set field
     a = SemanticAttribute.new(:a)
     @set.add a
     assert @set.include?(:a)
     assert_equal a, @set[:a], 'can find previously set fields'
+  end
 
-    # test creating a field by requesting it
-    assert @set[:b].is_a?(SemanticAttribute), 'can create a SemanticAttribute by requesting it from the set'
+  def test_that_find_creates_if_not_found
+    assert @set[:a].is_a?(SemanticAttribute), 'can create a SemanticAttribute by requesting it from the set'
   end
 end
