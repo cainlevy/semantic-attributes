@@ -40,4 +40,12 @@ class UniquePredicateTest < Test::Unit::TestCase
     assert @predicate.validate(@fred.login, @fred), "still valid after being saved"
     assert !@predicate.validate(users(:bob).login, @fred), "but still not valid when duplicating a *different* record"
   end
+
+  def test_uniqueness_of_numbers
+    Subscription.stub_semantics_with(:user_id => :unique)
+
+    bobs_second_subscription = Subscription.new(:user => users(:bob), :service => services(:premium))
+    assert !bobs_second_subscription.valid?
+    assert bobs_second_subscription.errors.on(:user_id)
+  end
 end

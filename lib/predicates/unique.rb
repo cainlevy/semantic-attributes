@@ -30,7 +30,7 @@ class Predicates::Unique < Predicates::Base
     conditions_array = ['']
     fields_values.each do |(attribute, attribute_value)|
       field_sql = "#{record.class.table_name}.#{attribute}"
-      unless self.case_sensitive
+      if record.class.columns_hash[attribute.to_s].text? and not self.case_sensitive
         field_sql = "LOWER(#{field_sql})"
         attribute_value.downcase! unless attribute_value.nil?
       end
