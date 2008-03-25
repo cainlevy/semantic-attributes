@@ -30,15 +30,17 @@ class Predicates::Unique < Predicates::Base
     conditions_array = ['']
     fields_values.each do |(attribute, attribute_value)|
       field_sql = "#{record.class.table_name}.#{attribute}"
+      comparison_value = attribute_value
+
       if record.class.columns_hash[attribute.to_s].text? and not self.case_sensitive
         field_sql = "LOWER(#{field_sql})"
-        attribute_value.downcase! unless attribute_value.nil?
+        comparison_value = comparison_value.downcase unless comparison_value.nil?
       end
-      field_sql << ' ' << record.class.send(:attribute_condition, attribute_value)
+      field_sql << ' ' << record.class.send(:attribute_condition, comparison_value)
 
       conditions_array.first << ' AND ' unless conditions_array.first.empty?
       conditions_array.first << field_sql
-      conditions_array << attribute_value
+      conditions_array << comparison_value
     end
 
     result = record.class.find(:all, :conditions => conditions_array, :limit => 2)

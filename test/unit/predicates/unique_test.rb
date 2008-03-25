@@ -48,4 +48,12 @@ class UniquePredicateTest < Test::Unit::TestCase
     assert !bobs_second_subscription.valid?
     assert bobs_second_subscription.errors.on(:user_id)
   end
+
+  def test_case_insensitive_is_non_destructive
+    @predicate.case_sensitive = false
+    @fred.update_attribute(:login, "Fred")
+
+    @predicate.validate(@fred.login, @fred)
+    assert_equal "Fred", @fred.login, "attribute value was not changed by validate()"
+  end
 end
