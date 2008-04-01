@@ -81,6 +81,31 @@ module ActiveRecord
           end
         end
       end
+
+      # Provides a way to pre-validate a single value out of context of
+      # an entire record. This is helpful for validating parts of a form
+      # before it has been submitted.
+      #
+      # For values that are (in)valid only in context, such as the common
+      # :password_confirmation (which is only valid with a matching :password),
+      # additional values may be specified.
+      #
+      # Returns first error message if value is expected invalid.
+      #
+      # Example:
+      #   User.expected_error_for(:username, "bob")
+      #   => "has already been taken."
+      #   User.expected_error_for(:username, "bob2392")
+      #   => nil
+      #   User.expected_error_for(:password_confirmation, "mismatched", :password => "opensesame")
+      #   => "must be the same as password."
+      def expected_error_for(attribute, value, extra_values = {})
+        @record = self.new(extra_values)
+        semantic_attributes[attribute.to_sym].predicates.each do |predicate|
+          return predicate.error_message unless predicate.validate(value, @record)
+        end
+        nil
+      end
     end
   end
 end

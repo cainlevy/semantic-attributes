@@ -28,4 +28,30 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
   def test_method_missing_still_works
     assert_raise NoMethodError do User.i_do_not_exist end
   end
+
+  ##
+  ## Want to test :expected_error_for with some common predicates.
+  ##
+
+  class PasswordUser < PluginTestModels::User
+    attr_accessor :password, :password_confirmation
+  end
+
+  def test_expected_error_for_with_unique_predicate
+    PasswordUser.stub_semantics_with(:login => :unique)
+    assert_not_nil PasswordUser.expected_error_for(:login, users(:bob).login)
+    assert_nil PasswordUser.expected_error_for(:login, "veryuniquelogin!")
+  end
+
+  def test_expected_error_for_with_length_predicate
+    PasswordUser.stub_semantics_with(:login => {:length => {:above => 5}})
+    assert_not_nil PasswordUser.expected_error_for(:login, "a" * 4)
+    assert_nil PasswordUser.expected_error_for(:login, "a" * 6)
+  end
+
+  def test_expected_error_for_with_same_as_predicate
+    PasswordUser.stub_semantics_with(:password_confirmation => {:same_as => {:method => :password}})
+    assert_not_nil PasswordUser.expected_error_for(:password_confirmation, "one thing", :password => "another thing")
+    assert_nil PasswordUser.expected_error_for(:password_confirmation, "thing", :password => "thing")
+  end
 end
