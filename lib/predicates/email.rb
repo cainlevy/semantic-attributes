@@ -15,7 +15,7 @@ class Predicates::Email < Predicates::Pattern
     result = super
     if result and self.with_mx_record
       domain = value.split('@').last
-      mx_record = `dig #{domain} mx +noall +answer`
+      mx_record = `dig #{domain} mx +noall +short`
       result &&= (!mx_record.empty?)
     end
     result
