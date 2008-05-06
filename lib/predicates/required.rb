@@ -17,7 +17,6 @@ class Predicates::Required < Predicates::Base
   end
 
   def validate(value, record)
-    # if we get here then it must not be empty/nil, so pass.
-    true
+    !value.blank?
   end
 end

@@ -4,6 +4,7 @@ class ValidationsTest < Test::Unit::TestCase
   def setup
     User.stub_semantics_with(:login => :required)
     @record = User.new
+    @login_required = @record.semantic_attributes['login'].get('required')
   end
 
   def test_validation_hook
@@ -23,55 +24,79 @@ class ValidationsTest < Test::Unit::TestCase
     assert_equal "translated!", @record.errors[:login]
   end
 
-  def test_validate_if_symbol
-    @record.stubs(:no).returns(false)
-    @record.stubs(:yes).returns(true)
-
-    assert !@record.valid?
-
-    @record.semantic_attributes['login'].get('required').validate_if = :no
-    assert @record.valid?
-
-    @record.semantic_attributes['login'].get('required').validate_if = :yes
-    assert !@record.valid?
-  end
-
-  def test_validate_if_proc
-    assert !@record.valid?
-
-    @record.semantic_attributes['login'].get('required').validate_if = proc {false}
-    assert @record.valid?
-
-    @record.semantic_attributes['login'].get('required').validate_if = proc {true}
-    assert !@record.valid?
-  end
-
   def test_validate_on_default
     assert_equal :both, @record.semantic_attributes['login'].get('required').validate_on
   end
 
-  def test_validate_on_create
+  ##
+  ## attr_valid?
+  ##
+
+  def test_attribute_valid?
+    assert !@record.login_valid?
+    @record.login = "foo"
+    assert @record.login_valid?
+  end
+
+  def test_attribute_valid_with_conditional_validation
+    assert !@record.login_valid?
+    @record.stubs(:validate_predicate?).returns(false)
+    assert @record.login_valid?
+  end
+
+  ##
+  ## validate_predicate?
+  ##
+
+  def test_validate_predicate_with_validate_if_symbol
+    @record.stubs(:no).returns(false)
+    @record.stubs(:yes).returns(true)
+
+    assert @record.send(:validate_predicate?, @login_required)
+
+    @record.semantic_attributes['login'].get('required').validate_if = :no
+    assert !@record.send(:validate_predicate?, @login_required)
+
+    @record.semantic_attributes['login'].get('required').validate_if = :yes
+    assert @record.send(:validate_predicate?, @login_required)
+  end
+
+  def test_validate_predicate_with_validate_if_proc
+    assert @record.send(:validate_predicate?, @login_required)
+
+    @record.semantic_attributes['login'].get('required').validate_if = proc {false}
+    assert !@record.send(:validate_predicate?, @login_required)
+
+    @record.semantic_attributes['login'].get('required').validate_if = proc {true}
+    assert @record.send(:validate_predicate?, @login_required)
+  end
+
+  def test_validate_predicate_with_validate_on_create
     @record = users(:george)
     @record.login = nil
 
     # test assumptions
     assert !@record.new_record?
-    assert !@record.valid?
+    assert @record.send(:validate_predicate?, @login_required)
 
     # the test
     @record.semantic_attributes['login'].get('required').validate_on = :create
-    assert @record.valid?, 'validation skipped when validate_on :create and !new_record?'
+    assert !@record.send(:validate_predicate?, @login_required)
   end
 
-  def test_validate_on_update
+  def test_validate_predicate_with_validate_on_update
     # test assumptions
     assert @record.new_record?
-    assert !@record.valid?
+    assert @record.send(:validate_predicate?, @login_required)
 
     # the test
     @record.semantic_attributes['login'].get('required').validate_on = :update
-    assert @record.valid?, 'validation skipped when validate_on :update and new_record?'
+    assert !@record.send(:validate_predicate?, @login_required)
   end
+
+  ##
+  ## :or_empty
+  ##
 
   def test_allow_empty
     User.stub_semantics_with(:login => {:number => {:or_empty => true}})

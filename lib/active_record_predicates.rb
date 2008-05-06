@@ -2,31 +2,23 @@
 module ActiveRecord
   module Predicates
     def self.included(base)
-      base.extend ClassMethods
-      base.validate :validate_predicates
-      base.write_inheritable_attribute :semantic_attributes, SemanticAttributes.new
-      base.class_inheritable_reader :semantic_attributes
+      base.class_eval do
+        extend ClassMethods
+
+        attribute_method_suffix '_valid?'
+
+        validate :validate_predicates
+
+        write_inheritable_attribute :semantic_attributes, SemanticAttributes.new
+        class_inheritable_reader :semantic_attributes
+      end
     end
 
     # the validation hook that checks all predicates
     def validate_predicates
       semantic_attributes.each do |attribute|
         attribute.predicates.each do |predicate|
-          case predicate.validate_if
-            when Symbol
-            next unless send(predicate.validate_if)
-
-            when Proc
-            next unless predicate.validate_if.call(self)
-          end
-
-          case predicate.validate_on
-            when :create
-            next unless new_record?
-
-            when :update
-            next if new_record?
-          end
+          next unless validate_predicate?(predicate)
 
           value = self.send(attribute.field)
           if (value.nil? or (value.respond_to? :empty? and value.empty?))
@@ -40,6 +32,38 @@ module ActiveRecord
           end
         end
       end
+    end
+
+    protected
+
+    # Returns true if this attribute would pass validation during the next save.
+    # Intended to be called via attribute suffix, like:
+    #   User#login_valid?
+    def attribute_valid?(attr)
+      semantic_attributes[attr.to_sym].predicates.all? do |p|
+        !validate_predicate?(p) or p.validate(self.send(attr), self)
+      end
+    end
+
+    # Returns true if the given predicate (for a specific attribute) should be validated.
+    def validate_predicate?(predicate)
+      case predicate.validate_if
+        when Symbol
+        return false unless send(predicate.validate_if)
+
+        when Proc
+        return false unless predicate.validate_if.call(self)
+      end
+
+      case predicate.validate_on
+        when :create
+        return false unless new_record?
+
+        when :update
+        return false if new_record?
+      end
+
+      true
     end
 
     module ClassMethods
@@ -89,6 +113,9 @@ module ActiveRecord
       # For values that are (in)valid only in context, such as the common
       # :password_confirmation (which is only valid with a matching :password),
       # additional values may be specified.
+      #
+      # WARNING: I still have not figured out what to do about differences in
+      # validation for new/existing records.
       #
       # Returns first error message if value is expected invalid.
       #
