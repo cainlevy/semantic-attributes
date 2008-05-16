@@ -28,7 +28,7 @@ class Predicates::Length < Predicates::Base
   end
 
   def validate(value, record)
-    l = value.to_s.length
+    l = value.to_s.chars.length
     if self.exactly
       l == self.exactly
     elsif self.range
