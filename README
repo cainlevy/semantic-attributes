@@ -1,43 +1,45 @@
 SemanticAttributes
 ==================
-
 -by Lance Ivy, 2007
+
+http://github.com/cainlevy/semantic-attributes
 
 http://code.google.com/p/semanticattributes/
 
-==Problem
-Attributes in ActiveRecord have no semantic meaning. Validations only describe what to _do_ with a field, not what the field _means_. But if you know what the field means, then you (and other plugins) can easily infer what to do! So the built-in validations are really tackling the problem backwards.
+The method-chained validation routine built into ActiveRecord must die! It's time for an object-oriented approach to attribute validations. The Semantic Attributes plugin provides this approach by letting you attach predicates to your attributes with a tasty DSL. These predicates package up some really sweet behavior, where validations are really only the beginning. I've also discovered that it can be really useful to use these predicates to convert between human and machine formats: for example, with the phone number predicate you can let your users enter phone numbers with whatever formatting they want, always save the values to the database as numeric strings, and then present the values back to the user with standard formatting.
 
-==Solution
-Allow the developer to create meaning for ActiveRecord attributes by assigning Predicates in a natural, declarative syntax. Allow the developer (and other plugins) to reflect on predicates and intelligently adapt behavior.
-
-Now that attributes have high-level semantic meaning, you can get other value-added behavior like machine/human formats. Your code needs to deal with normalized or code-like values, but humans need to see something readable. For common patterns (like phone numbers) SemanticAttributes can handle this for you automatically.
+I've also found other nifty uses for object-oriented predicates that package up validation. For example, it becomes easy to run a quick validation check on a field with a sample value and report true/false. This is exactly what the <tt>expected_error_for(:field, value)</tt> method does, and it lets you build a validation routine that listens to form data as it's being typed and report problems without duplicating your validation code client-side. In a similar vein, the <tt>_valid?</tt> attribute suffix lets you do single-attribute validation on a record anytime you want.
 
 ==Example
 
   class User < ActiveRecord::Base
-    name_is_required
-    email_is_required
-    email_is_an_email :with_mx_record => true
+    email_is_an_email
     home_page_is_a_url :domains => ['com', 'net', 'org'], :allow_ip_address => false
     mobile_is_a_phone_number
   end
+
+Now imagine a sample script/console session:
 
   >> User.name_is_required?
   => true
   >> User.mobile_is_required?
   => false
+
+Ok, we have a DSL for introspection. What if we want to retrieve configuration details?
+
   >> User.semantic_attributes[:home_page].get(:url).domains
   => ['com', 'net', 'org']
+
+Let's create a user and play around with some instance methods:
+
   >> user = User.new
   >> user.mobile = '222 333.4444'
+  >> user.mobile_valid?
+  => true
   >> user.mobile
   => '+12223334444'
   >> user.mobile_for_human
   => '(222) 333-4444'
-
-==Status
-Stable, but not ready for public release. It needs to be used by more people than myself before I'm comfortable calling it done.
 
 ==See Also
 * Predicates
