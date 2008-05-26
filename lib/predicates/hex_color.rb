@@ -10,6 +10,8 @@ class Predicates::HexColor < Predicates::Pattern
   end
 
   def from_human(value)
+    return value if value.blank?
+
     # ensure leading pound sign
     value = "##{value}" unless value[0].chr == '#'
     # expand from three characters to six characters

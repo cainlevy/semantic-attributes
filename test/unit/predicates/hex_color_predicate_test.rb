@@ -10,6 +10,8 @@ class HexColorPredicateTest < Test::Unit::TestCase
   end
 
   def test_from_human_conversions
+    assert_equal "", @predicate.from_human("")
+    assert_equal nil, @predicate.from_human(nil)
     assert_equal "#123456", @predicate.from_human("123456"), "adds a pound sign"
     assert_equal "#123456", @predicate.from_human("#123456"), "does not duplicate the pound sign"
     assert_equal "#112233", @predicate.from_human("123"), "expand three-character syntax"
