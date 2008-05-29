@@ -21,7 +21,7 @@ module ActiveRecord
           next unless validate_predicate?(predicate)
 
           value = self.send(attribute.field)
-          if (value.nil? or (value.respond_to? :empty? and value.empty?))
+          if value.blank?
             # it's empty, so add an error or not but either way move along
             self.errors.add(attribute.field, _(predicate.error_message)) unless predicate.allow_empty?
             next
@@ -41,7 +41,7 @@ module ActiveRecord
     #   User#login_valid?
     def attribute_valid?(attr)
       semantic_attributes[attr.to_sym].predicates.all? do |p|
-        !validate_predicate?(p) or p.validate(self.send(attr), self)
+        !validate_predicate?(p) or (self.send(attr).blank? and p.allow_empty?) or p.validate(self.send(attr), self)
       end
     end
 
