@@ -7,7 +7,7 @@ class Predicates::Domain < Predicates::Base
   end
 
   def validate(value, record)
-    url = URI.parse(value.include?("://") ? value : "http://#{value}")
+    url = URI.parse(with_protocol(value))
     valid = (url.host == value)
     valid &&= (value.match /\..+\Z/) # to catch "http://example" or similar
     valid &&= (!value.match /^([0-9]{1,3}\.){3}[0-9]{1,3}$/) # to catch ip addresses
@@ -18,8 +18,14 @@ class Predicates::Domain < Predicates::Base
   end
 
   def from_human(v)
-    URI.parse(v).host || v
+    URI.parse(with_protocol(v)).host || v
   rescue URI::InvalidURIError
     v
+  end
+
+  protected
+
+  def with_protocol(value)
+    !value or value.include?("://") ? value : "http://#{value}"
   end
 end
