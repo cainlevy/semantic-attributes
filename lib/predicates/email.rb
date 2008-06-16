@@ -12,6 +12,7 @@ class Predicates::Email < Predicates::Pattern
   end
 
   def validate(value, record)
+    return false if value.include?("/") # because foo@example./com is valid by the regex, but damned if i know why
     result = super
     if result and self.with_mx_record
       domain = value.split('@').last

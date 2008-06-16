@@ -13,6 +13,7 @@ class EmailPredicateTest < Test::Unit::TestCase
     assert !@predicate.validate('.test@example.com', nil), 'leading period'
     assert !@predicate.validate('test@example.com.', nil), 'trailing period'
     assert !@predicate.validate('test@example', nil), 'missing domain'
+    assert !@predicate.validate('abc@example./com', nil), 'with path'
   end
 
   def test_with_mx_record
