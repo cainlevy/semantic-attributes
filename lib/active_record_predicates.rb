@@ -9,8 +9,8 @@ module ActiveRecord
 
         validate :validate_predicates
 
-        write_inheritable_attribute :semantic_attributes, SemanticAttributes.new
         class_inheritable_reader :semantic_attributes
+        write_inheritable_attribute :semantic_attributes, SemanticAttributes.new
       end
     end
 
