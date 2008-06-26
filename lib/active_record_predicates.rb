@@ -8,10 +8,11 @@ module ActiveRecord
         attribute_method_suffix '_valid?'
 
         validate :validate_predicates
-
-        class_inheritable_reader :semantic_attributes
-        write_inheritable_attribute :semantic_attributes, SemanticAttributes.new
       end
+    end
+
+    def semantic_attributes
+      self.class.semantic_attributes
     end
 
     # the validation hook that checks all predicates
@@ -67,6 +68,10 @@ module ActiveRecord
     end
 
     module ClassMethods
+      def semantic_attributes
+        read_inheritable_attribute(:semantic_attributes) || write_inheritable_attribute(:semantic_attributes, SemanticAttributes.new)
+      end
+
       # Provides sugary syntax for adding and querying predicates
       #
       # The syntax supports the following forms:
