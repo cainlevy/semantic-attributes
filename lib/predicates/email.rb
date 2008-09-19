@@ -1,58 +1,42 @@
-# Describes a regular expression pattern for email addresses, using RFC822.
+# Describes a regular expression pattern for email addresses, based on RFC2822 and RFC3696.
+# Adapted from Alex Dunae's validates_email_format_of plugin v1.2.2, available under MIT License at http://code.dunae.ca/validates_email_format_of.html
 #
 # ==Options
 # * :with_mx_record [boolean, default false] - whether to verify the email's domain using a dns lookup for an mx record. This requires the Unix `dig` command. In Debian this is part of the dnsutils package. NOTE: RFC2821 states that when no MX records are listed, an A record may be used instead. This means that a missing MX record may not mean an invalid email address! Use at your own risk.
 #
 # == Example
 #   field_is_an_email :with_mx_record => true
-class Predicates::Email < Predicates::Pattern
+class Predicates::Email < Predicates::Base
   attr_accessor :with_mx_record
-  def like
-    @like ||= Predicates::Email::RFC822::EmailAddress
-  end
 
   def validate(value, record)
-    return false if value.include?("/") # because foo@example./com is valid by the regex, but damned if i know why
-    result = super
-    if result and self.with_mx_record
-      domain = value.split('@').last
-      mx_record = `dig #{domain} mx +noall +short`
-      result &&= (!mx_record.empty?)
+    # local part max is 64 chars, domain part max is 255 chars
+    domain, local = value.reverse.split('@', 2)
+
+    valid = value.match(EmailAddressPattern)
+    valid &&= !(value.match /\.\./)
+    valid &&= (domain.length <= 255)
+    valid &&= (local.length <= 64)
+
+    if valid and self.with_mx_record
+      mx_record = `dig #{value.split('@').last} mx +noall +short`
+      valid &&= (!mx_record.empty?)
     end
-    result
+
+    valid
   end
 
   def error_message
     @error_message || 'must be an email address.'
   end
 
-  #
-  # RFC822 Email Address Regex
-  # --------------------------
-  #
-  # Originally written by Cal Henderson
-  # c.f. http://iamcal.com/publish/articles/php/parsing_email/
-  #
-  # Translated to Ruby by Tim Fletcher, with changes suggested by Dan Kubb.
-  #
-  # Licensed under a Creative Commons Attribution-ShareAlike 2.5 License
-  # http://creativecommons.org/licenses/by-sa/2.5/
-  #
-  module RFC822
-    EmailAddress = begin
-      qtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]'
-      dtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]'
-      atom = '[^\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]+'
-      quoted_pair = '\\x5c[\\x00-\\x7f]'
-      domain_literal = "\\x5b(?:#{dtext}|#{quoted_pair})*\\x5d"
-      quoted_string = "\\x22(?:#{qtext}|#{quoted_pair})*\\x22"
-      domain_ref = atom
-      sub_domain = "(?:#{domain_ref}|#{domain_literal})"
-      word = "(?:#{atom}|#{quoted_string})"
-      domain = "#{sub_domain}(?:\\x2e#{sub_domain})+" # edited to require a TLD
-      local_part = "#{word}(?:\\x2e#{word})*"
-      addr_spec = "#{local_part}\\x40#{domain}"
-      pattern = /\A#{addr_spec}\z/
-    end
+  EmailAddressPattern = begin
+    local_part_special_chars = Regexp.escape('!#$%&\'*-/=?+-^_`{|}~')
+    local_part_unquoted = '(([[:alnum:]' + local_part_special_chars + ']+[\.\+]+))*[[:alnum:]' + local_part_special_chars + '+]+'
+    local_part_quoted = '\"(([[:alnum:]' + local_part_special_chars + '\.\+]*|(\\\\[\x00-\xFF]))*)\"'
+    Regexp.new(
+      '^((' + local_part_unquoted + ')|(' + local_part_quoted + ')+)@(((\w+\-+)|(\w+\.))*\w{1,63}\.[a-z]{2,6}$)',
+      Regexp::EXTENDED | Regexp::IGNORECASE
+    )
   end
 end
