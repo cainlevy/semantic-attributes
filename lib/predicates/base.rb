@@ -47,7 +47,7 @@ module Predicates
       @validate_on = :both
       @or_empty = true
       options.each_pair do |k, v|
-        self.send("#{k}=", v) if self.respond_to? "#{k}="
+        self.send("#{k}=", v)
       end
     end
 

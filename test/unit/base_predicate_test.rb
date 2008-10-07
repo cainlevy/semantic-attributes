@@ -17,6 +17,12 @@ class BasePredicateTest < Test::Unit::TestCase
     assert_equal 'hello world', predicate.error_message
   end
 
+  def test_initializer_assignment_with_typos
+    assert_raises NoMethodError do
+      Predicates::Base.new(:foo, :unknown_option => "something")
+    end
+  end
+  
   def test_default_values
     assert @predicate.allow_empty?, "allow empty/nil values by default"
     assert_equal :both, @predicate.validate_on, "validate on create and update by default"
