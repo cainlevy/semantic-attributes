@@ -28,4 +28,12 @@ class BasePredicateTest < Test::Unit::TestCase
     predicate = Predicates::Base.new(:foo, :or_empty => false)
     assert !predicate.allow_empty?
   end
+  
+  def test_message_aliasing
+    predicate = Predicates::Base.new(:foo)
+    predicate.error_message = "something"
+    assert_equal "something", predicate.message
+    predicate.message = "another thing"
+    assert_equal "another thing", predicate.error_message
+  end
 end

@@ -1,5 +1,7 @@
 # TODO: organize the library code to take advantage of ActiveSupport's auto-loading
 
+require 'core_ext/class'
+
 require 'predicates'
 require 'semantic_attribute'
 require 'semantic_attributes'

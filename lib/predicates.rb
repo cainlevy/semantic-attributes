@@ -15,11 +15,13 @@ module Predicates
 
     # the error string when validation fails
     attr_accessor :error_message
+    alias_accessor :message, :error_message
 
     # a condition to restrict when validation should occur. if it returns false, the validation will not happen.
     # if the value is a proc, then the proc will be called and the record object passed as the argument
     # if the value is a symbol, then a method by that name will be called on the record
     attr_accessor :validate_if
+    alias_accessor :if, :validate_if
 
     # defines when to do the validation - during :update or :create (default is both, signified by absence of specification)
     # options: :update, :create, and :both
@@ -28,6 +30,7 @@ module Predicates
       raise ArgumentError('unknown value for :validate_on parameter') unless [:update, :create, :both].include? val
       @validate_on = val
     end
+    alias_accessor :on, :validate_on
 
     # whether to allow empty (and nil) values during validation (default: true)
     attr_writer :or_empty
@@ -62,6 +65,7 @@ module Predicates
 
     # define this in the concrete class to provide a method for converting from a human readable format to a storage format.
     # this is good for letting people do fuzzy searches, or add values through a form in a variety of formats, but still retain consistent data.
+    # really, consider this a normalization routine for form input.
     def from_human(value)
       value
     end
