@@ -95,6 +95,13 @@ module SemanticAttributes
           if /^(.*)_(is|has)_(an?_)?([^?]*)(\?)?$/.match(name.to_s)
             options = args.pop if args.last.is_a? Hash
             fields = ($1 == 'fields') ? args : [$1]
+            
+            fields.each do |f|
+              unless instance_methods.include?(f) or column_names.include?(f)
+                raise ArgumentError.new("unknown attribute `#{f}'")
+              end
+            end
+            
             predicate = $4
             if $5 == '?'
               self.semantic_attributes[fields.first].has? predicate

@@ -8,11 +8,18 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
 
   def test_method_missing
     @klass = User.dup
+    @klass.class_eval do
+      attr_reader :foo, :bar, :fax
+    end
 
     assert_nothing_raised 'creating predicates via method_missing sugar' do
       @klass.foo_is_required
       @klass.bar_has_a_length
       @klass.fax_is_a_phone_number
+    end
+    
+    assert_raises ArgumentError do
+      @klass.unknown_is_required
     end
 
     assert @klass.semantic_attributes[:foo].has?(:required)
