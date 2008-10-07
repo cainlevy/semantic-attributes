@@ -1,4 +1,4 @@
-module ActiveRecord::ValidationRecursion
+module ActiveRecord::ValidationRecursionControl
   def self.included(base) #:nodoc:
     base.class_eval do
       alias_method_chain :valid?, :recursion_control

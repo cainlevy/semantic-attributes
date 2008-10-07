@@ -15,7 +15,8 @@ ActiveRecord::Base.establish_connection('semantic_attributes_test')
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/test.log")
 
 # load the code-to-be-tested
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib/'
+Dependencies.load_paths << File.dirname(__FILE__) + '/../lib/'
+$LOAD_PATH.unshift         File.dirname(__FILE__) + '/../lib/'
 require File.dirname(__FILE__) + '/../init'
 
 # load the schema ... silently
