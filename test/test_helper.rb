@@ -15,7 +15,7 @@ ActiveRecord::Base.establish_connection('semantic_attributes_test')
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/test.log")
 
 # load the code-to-be-tested
-Dependencies.load_paths << File.dirname(__FILE__) + '/../lib/'
+ActiveSupport::Dependencies.load_paths << File.dirname(__FILE__) + '/../lib/'
 $LOAD_PATH.unshift         File.dirname(__FILE__) + '/../lib/'
 require File.dirname(__FILE__) + '/../init'
 
@@ -47,7 +47,7 @@ class ActiveRecord::Base
   # User.stub_semantics_with(:email => {:length => {:above => 5}})
   # User.stub_semantics_with(:email => [:email, {:length => {:above => 5}}])
   def self.stub_semantics_with(attr_predicates = {})
-    semantics = SemanticAttributes.new
+    semantics = SemanticAttributes::Set.new
     attr_predicates.each do |attr, predicates|
       [predicates].flatten.each do |predicate|
         case predicate

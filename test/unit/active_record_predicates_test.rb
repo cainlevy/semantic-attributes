@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class ActiveRecordExtensionsTest < Test::Unit::TestCase
   def test_module
-    assert ActiveRecord::Base.included_modules.include?(ActiveRecord::Predicates)
-    assert ActiveRecord::Base.semantic_attributes.is_a?(SemanticAttributes)
+    assert ActiveRecord::Base.included_modules.include?(SemanticAttributes::Predicates)
+    assert ActiveRecord::Base.semantic_attributes.is_a?(SemanticAttributes::Set)
   end
 
   def test_method_missing

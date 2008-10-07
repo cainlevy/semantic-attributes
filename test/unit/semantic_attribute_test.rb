@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class SemanticAttributeTest < Test::Unit::TestCase
   def test_everything
-    @field = SemanticAttribute.new('a')
+    @field = SemanticAttributes::Attribute.new('a')
     assert_equal :a, @field.field
 
     assert !@field.has?('required')
@@ -12,7 +12,7 @@ class SemanticAttributeTest < Test::Unit::TestCase
   end
 
   def test_short_names
-    @attribute = SemanticAttribute.new('a')
+    @attribute = SemanticAttributes::Attribute.new('a')
     assert_equal Predicates::PhoneNumber, @attribute.send(:class_of, 'phone_number')
   end
 end

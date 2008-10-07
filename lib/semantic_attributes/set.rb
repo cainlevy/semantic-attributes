@@ -1,5 +1,5 @@
-# a set of SemanticAttribute objects, which themselves contain Predicates
-class SemanticAttributes
+# a set of SemanticAttributes::Attribute objects, which themselves contain Predicates
+class SemanticAttributes::Set
   include Enumerable
 
   def initialize
@@ -7,7 +7,9 @@ class SemanticAttributes
   end
 
   def add(semantic_attribute)
-    raise ArgumentError, 'Must pass a SemanticAttribute object' unless semantic_attribute.is_a? SemanticAttribute
+    unless semantic_attribute.is_a? SemanticAttributes::Attribute
+      raise ArgumentError, 'Must pass a SemanticAttributes::Attribute object'
+    end
     @set << semantic_attribute
   end
 
@@ -15,7 +17,7 @@ class SemanticAttributes
   def [](field)
     field = field.to_sym
     semantic_attribute = @set.find {|i| i.field == field}
-    self.add(semantic_attribute = SemanticAttribute.new(field)) unless semantic_attribute
+    self.add(semantic_attribute = SemanticAttributes::Attribute.new(field)) unless semantic_attribute
     semantic_attribute
   end
 

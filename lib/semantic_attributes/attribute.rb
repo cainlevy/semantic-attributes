@@ -1,5 +1,5 @@
 # a field with its assocatied predicates
-class SemanticAttribute
+class SemanticAttributes::Attribute
   attr_reader :field
   def initialize(field)
     @field = field.to_sym

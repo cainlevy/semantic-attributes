@@ -1,5 +1,5 @@
 # active record tie-ins
-module ActiveRecord
+module SemanticAttributes
   module Predicates
     def self.included(base)
       base.class_eval do
@@ -69,7 +69,7 @@ module ActiveRecord
 
     module ClassMethods
       def semantic_attributes
-        read_inheritable_attribute(:semantic_attributes) || write_inheritable_attribute(:semantic_attributes, SemanticAttributes.new)
+        read_inheritable_attribute(:semantic_attributes) || write_inheritable_attribute(:semantic_attributes, SemanticAttributes::Set.new)
       end
 
       # Provides sugary syntax for adding and querying predicates

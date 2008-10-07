@@ -1,4 +1,4 @@
-module ActiveRecord #:nodoc:
+module SemanticAttributes #:nodoc:
   # Some predicates define different data formats for machines vs humans. For example, your code might always want phone numbers to be integers, but that's not so readable for humans.
   #
   # SemanticAttributes uses the following pattern to handle the different formats:

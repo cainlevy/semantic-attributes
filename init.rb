@@ -1,8 +1,10 @@
 require 'core_ext/class'
 
-ActiveRecord::Base.send(:include, ActiveRecord::Predicates)
-ActiveRecord::Base.send(:include, ActiveRecord::AttributeFormats)
-ActiveRecord::Base.send(:include, ActiveRecord::ValidationRecursionControl)
+ActiveRecord::Base.class_eval do
+  include SemanticAttributes::Predicates
+  include SemanticAttributes::AttributeFormats
+  include ActiveRecord::ValidationRecursionControl
+end
 
 # localization mock
 ActiveRecord::Base.class_eval do
