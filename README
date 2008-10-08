@@ -6,6 +6,12 @@ http://github.com/cainlevy/semantic-attributes
 
 http://code.google.com/p/semanticattributes/
 
+==Summary
+
+A validation library that allows introspection (User.name_is_required?) and supports database normalization (aka "form input cleaning").
+
+==Philosophy
+
 The method-chained validation routine built into ActiveRecord must die! It's time for an object-oriented approach to attribute validations. The Semantic Attributes plugin provides this approach by letting you attach predicates to your attributes with a tasty DSL. These predicates package up some really sweet behavior, where validations are really only the beginning. I've also discovered that it can be really useful to use these predicates to convert between human and machine formats: for example, with the phone number predicate you can let your users enter phone numbers with whatever formatting they want, always save the values to the database as numeric strings, and then present the values back to the user with standard formatting.
 
 I've also found other nifty uses for object-oriented predicates that package up validation. For example, it becomes easy to run a quick validation check on a field with a sample value and report true/false. This is exactly what the <tt>expected_error_for(:field, value)</tt> method does, and it lets you build a validation routine that listens to form data as it's being typed and report problems without duplicating your validation code client-side. In a similar vein, the <tt>_valid?</tt> attribute suffix lets you do single-attribute validation on a record anytime you want.
@@ -42,6 +48,7 @@ Let's create a user and play around with some instance methods:
   => '(222) 333-4444'
 
 ==See Also
+* gist.rdoc
 * Predicates
 * ActiveRecord::Predicates::ClassMethods (see #method_missing)
 * ActiveRecord::AttributeFormats

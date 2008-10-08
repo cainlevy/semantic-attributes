@@ -1,0 +1,194 @@
+==Describing
+
+Format:
+
+  #{attribute_name}_#{verb}_#{required}?_#{predicate}(options = {})
+
+Example:
+
+  class Post < ActiveRecord::Base
+    belongs_to :author
+    
+    title_is_required
+    author_is_a_required_association
+    body_has_length :below => 256
+  end
+
+==Predicates
+
+===aliased
+Use when the attribute may only contain certain values, but those values have human labels.
+
+Example:
+
+  class User < ActiveRecord::Base
+    classification_is_aliased :options => {
+      1 => "user",
+      2 => "admin",
+      3 => "superadmin"
+    }
+  end
+
+===association
+Use when an association has a minimum or maximum number of records, or when you need to require that it exists. Note that it's ok for two records to require each other -- there won't be any infinitely recursive validation problems.
+
+Example:
+  
+  class User < ActiveRecord::Base
+    has_many :quotes
+    
+    quotes_is_an_association :max => 3
+  end
+  
+  class Quote < ActiveRecord::Base
+    belongs_to :user
+    
+    user_is_a_required_association
+  end
+
+===blacklisted
+Use when you need to make sure some value is NOT saved. Maybe you've reserved some for yourself?
+
+Example:
+
+  class User < ActiveRecord::Base
+    username_is_blacklisted :options => %w(admin superadmin god user anonymous)
+  end
+
+===domain
+Use when you need to capture a domain name, without protocol or path information.
+
+Example:
+
+  class Account < ActiveRecord::Base
+    cname_is_domain
+  end
+
+===email
+Use when you want to eliminate malformed email addresses. This will _not_ ensure deliverability -- that requires a field test.
+
+Example:
+
+  class User < ActiveRecord::Base
+    email_address_is_email
+  end
+
+===enumerated aka whitelisted
+Use when you want to limit the values a field may have. Useful for constraining polymorphic associations! Note that because of how required-ness is handled, if a field is empty this predicate will not be evaluated.
+
+Example:
+
+  class Favorite < ActiveRecord::Base
+    belongs_to :favoritable, :polymorphic => true
+    
+    # only allow favoriting of a User or Project
+    favoritable_type_is_enumerated :options => %w(User Project)
+  end
+
+===hex_color
+Use when you need to capture hex colors. Useful for theming! All colors will be stored in the database with a leading pound sign, expanded to the full six character size (e.g. "a1e" becomes "#aa11ee").
+
+Example:
+
+  class Account < ActiveRecord::Base
+    background_is_hex_color
+  end
+
+===length
+Use when you need to set an upper or lower boundary on the length of a field.
+
+Example:
+
+  class User < ActiveRecord::Base
+    username_has_length :range => 3..20
+    # the following are identical:
+    password_has_length :above => 3
+    password_has_length :above => 4, :exactly => true
+  end
+
+===number
+Use when you have a numeric field that needs to be constrained on the number line.
+
+Example:
+
+  class Auction < ActiveRecord::Base
+    buyout_is_number :integer => true
+    bid_increment_is_number :above => 5, :inclusive => true
+    quantity_is_number :range => 1..10
+  end
+
+===pattern
+Use when you need to define a regular expression pattern for a field. Actually, DON'T USE THIS. Instead, extend it and create a new predicate!
+
+===phone_number
+Use when you want to validate phone numbers against a formal numbering plan. Currently only supports NANP (North American Numbering Plan), which uses the +1 prefix. This predicate is smart enough to exclude the bogus 555-01xx numbers.
+
+If you use Semantic Attributes in an international application before I do, please help by contributing back to this predicate.
+
+Example:
+
+  class User < ActiveRecord::Base
+    mobile_is_a_phone_number
+  end
+
+===required
+Use when you simple need a field to be required. Note that if the field has any other semantics, you should add required-ness to those!
+
+Example:
+
+  class User < ActiveRecord::Base
+    password_is_required
+  end
+
+===same_as
+Use when you need some attribute to be the same as another attribute, aka this-is-how-you-do-password-confirmation.
+
+Example:
+
+  class User < ActiveRecord::Base
+    password_confirmation_is_same_as :method => :password
+  end
+
+===time
+Use when you have a time field that needs to be constrained on the timeline.
+
+This one needs to be more useful. It needs to compare times vs now, e.g. :before => :now or :after => "2.days.ago".
+
+===unique
+Use when you need an attribute to be unique, possibly in the scope of some other attributes. By default this is not case sensitive.
+
+Example:
+
+  class User < ActiveRecord::Base
+    email_is_unique :scope => [:account_id]
+  end
+
+===url
+Use when you have url. Please, use it! URLs can be complex. You may constrain your url to a list of domains, schemes, or ports. You may allow or disallow ip addresses.
+
+Example:
+
+  class User < ActiveRecord::Base
+    homepage_is_url :domain => %w(com net biz info edu)
+    backup_is_url :schemes => %w(https), :ports => [443], :implied_scheme => 'https'
+  end
+
+===usa_state
+Use when you have a USA state (or territory). Stores all states using USPS abbreviation.
+
+Example:
+
+  class Address < ActiveRecord::Base
+    state_is_a_usa_state :with_territories => true
+  end
+
+===usa_zip_code
+Use when you have a USA postal code, possibly with the extended +4 syntax.
+
+Example:
+
+  class Address < ActiveRecord::Base
+    # :extended may be any of :allowed, :required, or false (default)
+    postal_code_is_a_usa_zip_code :extended => :allowed
+  end
+
