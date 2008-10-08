@@ -1,35 +1,51 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class ActiveRecordExtensionsTest < Test::Unit::TestCase
+  class FooUser < User
+    attr_reader :foo
+  end
+  
+  def setup
+    FooUser.write_inheritable_attribute(:semantic_attributes, nil)
+  end
+
   def test_module
     assert ActiveRecord::Base.included_modules.include?(SemanticAttributes::Predicates)
     assert ActiveRecord::Base.semantic_attributes.is_a?(SemanticAttributes::Set)
   end
 
-  def test_method_missing
-    @klass = User.dup
-    @klass.class_eval do
-      attr_reader :foo, :bar, :fax
-    end
+  def test_declarative_sugar
+    @klass = FooUser
 
     assert_nothing_raised 'creating predicates via method_missing sugar' do
       @klass.foo_is_required
-      @klass.bar_has_a_length
-      @klass.fax_is_a_phone_number
-    end
-    
-    assert_raises ArgumentError do
-      @klass.unknown_is_required
+      @klass.foo_has_a_length
+      @klass.foo_is_a_phone_number
     end
 
     assert @klass.semantic_attributes[:foo].has?(:required)
     assert @klass.foo_is_required?
 
-    assert @klass.semantic_attributes[:bar].has?(:length)
-    assert @klass.bar_has_length?
+    assert @klass.semantic_attributes[:foo].has?(:length)
+    assert @klass.foo_has_length?
 
-    assert @klass.semantic_attributes[:fax].has?(:phone_number)
-    assert @klass.fax_is_a_phone_number?
+    assert @klass.semantic_attributes[:foo].has?(:phone_number)
+    assert @klass.foo_is_a_phone_number?
+  end
+  
+  def test_declarative_sugar_allows_inline_required
+    @klass = FooUser
+    
+    @klass.foo_is_a_required_phone_number
+    assert !@klass.semantic_attributes[:foo].get(:phone_number).allow_empty?
+    assert @klass.foo_is_a_phone_number?
+  end
+  
+  def test_declarative_sugar_catches_unknown_attributes
+    @klass = FooUser
+    assert_raises ArgumentError do
+      @klass.unknown_is_required
+    end
   end
 
   def test_method_missing_still_works

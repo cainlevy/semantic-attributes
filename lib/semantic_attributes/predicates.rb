@@ -92,8 +92,9 @@ module SemanticAttributes
         begin
           super
         rescue NameError
-          if /^(.*)_(is|has)_(an?_)?([^?]*)(\?)?$/.match(name.to_s)
-            options = args.pop if args.last.is_a? Hash
+          if /^(.*)_(is|has)_(an?_)?(required_)?([^?]*)(\?)?$/.match(name.to_s)
+            options = args.last.is_a?(Hash) ? args.pop : {}
+            options[:or_empty] = false if !$4.nil?
             fields = ($1 == 'fields') ? args : [$1]
             
             fields.each do |f|
@@ -102,8 +103,8 @@ module SemanticAttributes
               end
             end
             
-            predicate = $4
-            if $5 == '?'
+            predicate = $5
+            if $6 == '?'
               self.semantic_attributes[fields.first].has? predicate
             else
               args = [predicate]
