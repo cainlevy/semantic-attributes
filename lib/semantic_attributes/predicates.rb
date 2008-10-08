@@ -82,10 +82,13 @@ module SemanticAttributes
       #   #{attribute}_has_a_#{predicate}(options = {})
       #   #{attribute}_has_an_#{predicate}(options = {})
       #
+      # You may also add required-ness into the declaration:
+      #   #{attribute}_is_a_required_#{predicate}(options = {})
+      #
       # If you want to assign a predicate to multiple fields, you may replace the attribute component with the word 'fields', and pass a field list as the first argument, like this:
       #   fields_are_#{predicate}(fields = [], options = {})
       #
-      # Each form may also have a question mark at the end, to query whether the attribute has the predicate
+      # Each form may also have a question mark at the end, to query whether the attribute has the predicate.
       #
       # In order to avoid clashing with other method_missing setups, this syntax is checked *last*, after all other method_missing metaprogramming attempts have failed.
       def method_missing(name, *args)

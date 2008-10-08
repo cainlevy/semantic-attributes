@@ -1,5 +1,6 @@
-module ActiveRecord::ValidationRecursionControl
-  def self.included(base) #:nodoc:
+module ActiveRecord #:nodoc:
+module ValidationRecursionControl #:nodoc:
+  def self.included(base)
     base.class_eval do
       alias_method_chain :valid?, :recursion_control
     end
@@ -28,4 +29,5 @@ module ActiveRecord::ValidationRecursionControl
     recursion_stack.delete(self)
     result
   end
+end
 end
