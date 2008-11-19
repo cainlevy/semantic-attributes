@@ -28,7 +28,7 @@ class Predicates::Length < Predicates::Base
   end
 
   def validate(value, record)
-    l = value.to_s.chars.length
+    l = tokenize(value).length
     if self.exactly
       l == self.exactly
     elsif self.range
@@ -43,7 +43,14 @@ class Predicates::Length < Predicates::Base
   end
 
   protected
-
+  
+  def tokenize(value)
+    case value
+      when Array, Hash: value
+      else              value.to_s.chars
+    end
+  end
+  
   def range_description
     return self.exactly.to_s if self.exactly
     return "#{self.range.first} to #{self.range.last}" if self.range

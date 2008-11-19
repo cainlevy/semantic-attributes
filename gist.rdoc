@@ -94,8 +94,8 @@ Example:
     background_is_hex_color
   end
 
-===length
-Use when you need to set an upper or lower boundary on the length of a field.
+===length aka size
+Use when you need to set an upper or lower boundary on the length of a field. Note that this also works on arrays and hashes.
 
 Example:
 

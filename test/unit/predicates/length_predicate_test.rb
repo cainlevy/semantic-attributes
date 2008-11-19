@@ -46,12 +46,30 @@ class LengthPredicateTest < Test::Unit::TestCase
     assert @predicate.validate('12345', nil)
     assert !@predicate.validate('123456', nil)
   end
-
-  def test_data_types
-    @predicate.range = 1..5
+  
+  def test_symbols
+    @predicate.range = 2..3
     assert @predicate.validate(:abc, nil)
-    assert @predicate.validate(6, nil), 'length converts to a string'
-    assert @predicate.validate(0, nil), 'length converts to a string'
+    assert !@predicate.validate(:abcdef, nil)
+  end
+  
+  def test_numbers
+    @predicate.range = 2..3
+    assert !@predicate.validate(3, nil)
+    assert @predicate.validate(123, nil)
+  end
+  
+  def test_arrays
+    @predicate.range = 2..3
+    assert !@predicate.validate(['abc'], nil)
+    assert @predicate.validate(['abc', 'def', 'ghi'], nil)
+  end
+  
+  def test_multibyte_characters
+    $KCODE = "UTF8" # so ActiveSupport uses the UTF8Handler for Chars
+    @predicate.exactly = 4
+    assert @predicate.validate('ægis', nil)
+    assert !@predicate.validate('aegis', nil)
   end
 
   def test_no_options
