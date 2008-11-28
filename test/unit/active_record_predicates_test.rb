@@ -47,6 +47,14 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
       @klass.unknown_is_required
     end
   end
+  
+  def test_declarative_sugar_for_mass_assignment
+    @klass = FooUser
+    assert_nothing_raised do
+      @klass.fields_are_required :foo
+    end
+    assert @klass.foo_is_required?
+  end
 
   def test_method_missing_still_works
     assert_raise NoMethodError do User.i_do_not_exist end

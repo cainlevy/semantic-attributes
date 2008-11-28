@@ -95,10 +95,10 @@ module SemanticAttributes
         begin
           super
         rescue NameError
-          if /^(.*)_(is|has)_(an?_)?(required_)?([^?]*)(\?)?$/.match(name.to_s)
+          if /^(.*)_(is|has|are)_(an?_)?(required_)?([^?]*)(\?)?$/.match(name.to_s)
             options = args.last.is_a?(Hash) ? args.pop : {}
             options[:or_empty] = false if !$4.nil?
-            fields = ($1 == 'fields') ? args : [$1]
+            fields = ($1 == 'fields') ? args.map(&:to_s) : [$1]
             
             fields.each do |f|
               unless instance_methods.include?(f) or column_names.include?(f)
