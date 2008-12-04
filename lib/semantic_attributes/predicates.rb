@@ -100,9 +100,12 @@ module SemanticAttributes
             options[:or_empty] = false if !$4.nil?
             fields = ($1 == 'fields') ? args.map(&:to_s) : [$1]
             
-            fields.each do |f|
-              unless instance_methods.include?(f) or column_names.include?(f)
-                raise ArgumentError.new("unknown attribute `#{f}'")
+            # work around http://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/802
+            if ['test', 'development'].include? Rails.env
+              fields.each do |f|
+                unless instance_methods.include?(f) or column_names.include?(f)
+                  raise ArgumentError.new("unknown attribute `#{f}'")
+                end
               end
             end
             
