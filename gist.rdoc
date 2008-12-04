@@ -113,7 +113,7 @@ Example:
 
   class Auction < ActiveRecord::Base
     buyout_is_number :integer => true
-    bid_increment_is_number :above => 5, :inclusive => true
+    bid_increment_is_number :at_least => 5
     quantity_is_number :range => 1..10
   end
 

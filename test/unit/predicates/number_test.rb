@@ -52,8 +52,9 @@ class NumberPredicateTest < Test::Unit::TestCase
   end
 
   def test_min_inclusive
-    @predicate.above = 5
-    @predicate.inclusive = true
+    @predicate.at_least = 5
+    assert_equal 5, @predicate.above
+    assert @predicate.inclusive
     assert_equal 'must be a number at least 5.', @predicate.error_message
 
     assert !@predicate.validate(4, nil)
@@ -76,8 +77,9 @@ class NumberPredicateTest < Test::Unit::TestCase
   end
 
   def test_max_inclusive
-    @predicate.below = 5
-    @predicate.inclusive = true
+    @predicate.no_more_than = 5
+    assert_equal 5, @predicate.below
+    assert @predicate.inclusive
     assert_equal 'must be a number no more than 5.', @predicate.error_message
 
     assert @predicate.validate(5, nil)

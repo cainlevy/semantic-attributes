@@ -6,6 +6,8 @@
 # * :below [integer, float] - when the number has a maximum
 # * :range [range] - when the number has a minimum and a maximum
 # * :inclusive [boolean, default: false] - if your maximum or minimum is also an allowed value. Does not work with :range.
+# * :at_least [integer, float] - an easy way to say :above and :inclusive
+# * :no_more_than [integer, float] - an easy way to say :below and :inclusive
 #
 # ==Examples
 #   field_is_a_number :integer => true
@@ -28,6 +30,16 @@ class Predicates::Number < Predicates::Base
   # meant to be used with :above and :below, when you want the endpoint to be inclusive.
   # with the :range option you can just specify inclusion using the standard Ruby range syntax.
   attr_accessor :inclusive
+  
+  def at_least=(val)
+    self.above = val
+    self.inclusive = true
+  end
+  
+  def no_more_than=(val)
+    self.below = val
+    self.inclusive = true
+  end
 
   def error_message
     @error_message || "must be a number#{range_description}."
