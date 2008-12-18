@@ -7,6 +7,13 @@ require 'active_record'
 require 'active_record/fixtures'
 require 'mocha'
 
+# the hackaround for Rails issue #802 requires a Rails.env check
+module Rails
+  def self.env
+    ENV["RAILS_ENV"]
+  end
+end
+
 # establish the database connection
 ActiveRecord::Base.configurations = YAML::load(IO.read(File.dirname(__FILE__) + '/db/database.yml'))
 ActiveRecord::Base.establish_connection('semantic_attributes_test')
