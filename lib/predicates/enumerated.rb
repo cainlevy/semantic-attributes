@@ -8,6 +8,11 @@
 class Predicates::Enumerated < Predicates::Base
   attr_accessor :options
 
+  def initialize(attr, options = {})
+    options[:or_empty] ||= false
+    super(attr, options)
+  end
+
   def error_message
     @error_message || "is not an allowed option."
   end

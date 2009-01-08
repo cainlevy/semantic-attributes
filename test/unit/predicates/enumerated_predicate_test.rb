@@ -20,4 +20,9 @@ class EnumeratedPredicateTest < Test::Unit::TestCase
     @predicate.error_message = 'foo'
     assert_equal 'foo', @predicate.error_message
   end
+  
+  def test_or_empty
+    assert !Predicates::Enumerated.new(:foo).allow_empty?
+    assert Predicates::Enumerated.new(:foo, :or_empty => true).allow_empty?
+  end
 end

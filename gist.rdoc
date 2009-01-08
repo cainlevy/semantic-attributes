@@ -76,6 +76,8 @@ Example:
 ===enumerated aka whitelisted
 Use when you want to limit the values a field may have. Useful for constraining polymorphic associations! Note that because of how required-ness is handled, if a field is empty this predicate will not be evaluated.
 
+Note that this predicate implies required-ness.
+
 Example:
 
   class Favorite < ActiveRecord::Base
