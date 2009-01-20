@@ -34,7 +34,7 @@ class Predicates::Unique < Predicates::Base
 
       if record.class.columns_hash[attribute.to_s].text? and not self.case_sensitive
         field_sql = "LOWER(#{field_sql})"
-        comparison_value = comparison_value.downcase unless comparison_value.nil?
+        comparison_value = comparison_value.to_s.downcase unless comparison_value.nil?
       end
       field_sql << ' ' << record.class.send(:attribute_condition, comparison_value)
 

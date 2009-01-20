@@ -49,10 +49,12 @@ Example:
 ===blacklisted
 Use when you need to make sure some value is NOT saved. Maybe you've reserved some for yourself?
 
+By default this is not case sensitive. Which means that by default this assumes you only have strings. If you need to blacklist other data types, set :case_sensitive => false.
+
 Example:
 
   class User < ActiveRecord::Base
-    username_is_blacklisted :options => %w(admin superadmin god user anonymous)
+    username_is_blacklisted :restricted => %w(admin superadmin god user anonymous)
   end
 
 ===domain
