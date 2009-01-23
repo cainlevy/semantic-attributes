@@ -18,10 +18,12 @@ module SemanticAttributes
     # the validation hook that checks all predicates
     def validate_predicates
       semantic_attributes.each do |attribute|
-        attribute.predicates.each do |predicate|
-          next unless validate_predicate?(predicate)
-
-          value = self.send(attribute.field)
+        applicable_predicates = attribute.predicates.select{|p| validate_predicate?(p)}
+        
+        next if applicable_predicates.empty?
+        
+        value = self.send(attribute.field)
+        applicable_predicates.each do |predicate|
           if value.blank?
             # it's empty, so add an error or not but either way move along
             self.errors.add(attribute.field, _(predicate.error_message)) unless predicate.allow_empty?
