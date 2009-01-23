@@ -7,6 +7,6 @@ class AliasedPredicateTest < Test::Unit::TestCase
 
   def test_formats
     assert_equal '185', @predicate.to_human('10111001')
-    assert_equal '10111001', @predicate.from_human('185')
+    assert_equal '10111001', @predicate.normalize('185')
   end
 end

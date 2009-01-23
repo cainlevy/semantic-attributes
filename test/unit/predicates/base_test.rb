@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
 class BasePredicateTest < Test::Unit::TestCase
   def setup
@@ -9,7 +9,7 @@ class BasePredicateTest < Test::Unit::TestCase
     assert_equal 2, @predicate.method(:validate).arity
     assert_raise NotImplementedError do @predicate.validate(nil, nil) end
     assert_equal 'foo', @predicate.to_human('foo')
-    assert_equal 'foo', @predicate.from_human('foo')
+    assert_equal 'foo', @predicate.normalize('foo')
   end
 
   def test_initializer_assignment

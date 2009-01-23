@@ -100,15 +100,6 @@ module SemanticAttributes
             options[:or_empty] = false if !$4.nil?
             fields = ($1 == 'fields') ? args.map(&:to_s) : [$1]
             
-            # work around http://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/802
-            if ['test', 'development'].include? Rails.env
-              fields.each do |f|
-                unless instance_methods.include?(f) or column_names.include?(f)
-                  raise ArgumentError.new("unknown attribute `#{f}'")
-                end
-              end
-            end
-            
             predicate = $5
             if $6 == '?'
               self.semantic_attributes[fields.first].has? predicate
@@ -116,6 +107,8 @@ module SemanticAttributes
               args = [predicate]
               args << options if options
               fields.each do |field|
+                # TODO: create a less sugary method that may be used programmatically and takes care of defining the normalization method properly
+                define_normalization_method_for field
                 self.semantic_attributes[field].add *args
               end
             end

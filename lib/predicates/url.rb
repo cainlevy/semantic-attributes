@@ -52,7 +52,7 @@ class Predicates::Url < Predicates::Base
     false
   end
 
-  def from_human(v)
+  def normalize(v)
     url = URI.parse(v)
     url = URI.parse("#{self.implied_scheme}://#{v}") if self.implied_scheme and not (url.scheme and url.host)
     url.to_s

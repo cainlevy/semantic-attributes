@@ -28,13 +28,13 @@ class PhoneNumberPredicateTest < Test::Unit::TestCase
     assert @predicate.validate('+12225550200', nil), 'allowed 555 code'
   end
 
-  def test_from_human
+  def test_normalize
     @predicate.implied_country_code = 99
 
-    assert_equal '+12223334444', @predicate.from_human('12223334444'), 'recognizes north american country code without +'
-    assert_equal '+12223334444', @predicate.from_human('+12223334444'), 'leaves country codes alone if they exist'
-    assert_equal '+992223334444', @predicate.from_human('2223334444'), 'adds implied country code'
-    assert_equal '+12223334444', @predicate.from_human('1 (222) 333.4444'), 'ignores various formatting characters'
-    assert_equal '+992223334444', @predicate.from_human('222typo333oops4444'), 'ignores non-numeric characters'
+    assert_equal '+12223334444', @predicate.normalize('12223334444'), 'recognizes north american country code without +'
+    assert_equal '+12223334444', @predicate.normalize('+12223334444'), 'leaves country codes alone if they exist'
+    assert_equal '+992223334444', @predicate.normalize('2223334444'), 'adds implied country code'
+    assert_equal '+12223334444', @predicate.normalize('1 (222) 333.4444'), 'ignores various formatting characters'
+    assert_equal '+992223334444', @predicate.normalize('222typo333oops4444'), 'ignores non-numeric characters'
   end
 end

@@ -65,23 +65,23 @@ class UrlPredicateTest < Test::Unit::TestCase
     assert !@predicate.validate('http:\\\\example.com\\', nil)
     assert !@predicate.validate('example.com', nil), 'human format does not validate'
 
-    assert_equal 'http:\\\\example.com\\', @predicate.from_human('http:\\\\example.com\\'), 'malformed human format is preserved'
+    assert_equal 'http:\\\\example.com\\', @predicate.normalize('http:\\\\example.com\\'), 'malformed human format is preserved'
   end
 
   def test_implied_scheme
     assert_equal 'http', @predicate.implied_scheme
 
-    assert_equal 'http://example.com/', @predicate.from_human('http://example.com/'), 'no changes'
-    assert_equal 'ftp://example.com/', @predicate.from_human('ftp://example.com/'), 'no changes when scheme is not default'
-    assert_equal 'http://example.com', @predicate.from_human('example.com'), 'basic implied scheme support'
-    assert_equal 'http://example.com:443', @predicate.from_human('example.com:443'), 'preserve ports'
+    assert_equal 'http://example.com/', @predicate.normalize('http://example.com/'), 'no changes'
+    assert_equal 'ftp://example.com/', @predicate.normalize('ftp://example.com/'), 'no changes when scheme is not default'
+    assert_equal 'http://example.com', @predicate.normalize('example.com'), 'basic implied scheme support'
+    assert_equal 'http://example.com:443', @predicate.normalize('example.com:443'), 'preserve ports'
 
     @predicate.implied_scheme = nil
 
-    assert_equal 'http://example.com/', @predicate.from_human('http://example.com/')
-    assert_equal 'ftp://example.com/', @predicate.from_human('ftp://example.com/')
-    assert_equal 'example.com', @predicate.from_human('example.com')
-    assert_equal 'example.com:80', @predicate.from_human('example.com:80')
+    assert_equal 'http://example.com/', @predicate.normalize('http://example.com/')
+    assert_equal 'ftp://example.com/', @predicate.normalize('ftp://example.com/')
+    assert_equal 'example.com', @predicate.normalize('example.com')
+    assert_equal 'example.com:80', @predicate.normalize('example.com:80')
   end
 
   def test_error_message

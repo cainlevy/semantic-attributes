@@ -17,7 +17,7 @@ class Predicates::Domain < Predicates::Base
     false
   end
 
-  def from_human(v)
+  def normalize(v)
     URI.parse(with_protocol(v)).host || v
   rescue URI::InvalidURIError
     v

@@ -8,7 +8,7 @@ class Predicates::Aliased < Predicates::Enumerated
     options[v]
   end
 
-  def from_human(v)
+  def normalize(v)
     options.index(v)
   end
 end

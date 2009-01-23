@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class ActiveRecordExtensionsTest < Test::Unit::TestCase
   class FooUser < User
-    attr_reader :foo
+    attr_accessor :foo
   end
   
   def setup
@@ -43,7 +43,7 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
   
   def test_declarative_sugar_catches_unknown_attributes
     @klass = FooUser
-    assert_raises ArgumentError do
+    assert_raises NameError do
       @klass.unknown_is_required
     end
   end

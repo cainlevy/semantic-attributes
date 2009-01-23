@@ -9,7 +9,7 @@ class Predicates::HexColor < Predicates::Pattern
     @error_message ||= "must be a hex color."
   end
 
-  def from_human(value)
+  def normalize(value)
     return value if value.blank?
 
     # ensure leading pound sign

@@ -23,11 +23,11 @@ class DomainPredicateTest < Test::Unit::TestCase
     end
   end
 
-  def test_from_human
-    assert_equal "example.com", @predicate.from_human("http://example.com:8080/foo")
-    assert_equal "example.com", @predicate.from_human("example.com/foo")
-    assert_equal nil, @predicate.from_human(nil)
-    assert_equal "", @predicate.from_human("")
-    assert_equal "example.com", @predicate.from_human("example.com")
+  def test_normalize
+    assert_equal "example.com", @predicate.normalize("http://example.com:8080/foo")
+    assert_equal "example.com", @predicate.normalize("example.com/foo")
+    assert_equal nil, @predicate.normalize(nil)
+    assert_equal "", @predicate.normalize("")
+    assert_equal "example.com", @predicate.normalize("example.com")
   end
 end

@@ -2,12 +2,12 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class InheritanceTest < Test::Unit::TestCase
   class Worker < User
-    attr_reader :name_tag
+    attr_accessor :name_tag
     name_tag_is_required
   end
 
   class Clerk < Worker
-    attr_reader :pen
+    attr_accessor :pen
     pen_is_required
   end
 
