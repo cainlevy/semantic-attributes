@@ -154,9 +154,19 @@ Example:
   end
 
 ===time
-Use when you have a time field that needs to be constrained on the timeline.
+Use when you have a time field that needs to be constrained on the timeline. You may set your constraint either absolutely (e.g. after Jan 1, 2005) or relatively (e.g. no older than 5 minutes from now).
 
-This one needs to be more useful. It needs to compare times vs now, e.g. :before => :now or :after => "2.days.ago".
+Example:
+
+  class Project < ActiveRecord::Base
+    # this deadline must be after Jan 1, 2005
+    deadline_is_time :after => Time.parse("2005-01-01 00:00:00")
+  end
+  
+  class Project < ActiveRecord::Base
+    # this deadline must be no older than 5 days and no further in the future than 1 week, as of the time of validation.
+    deadline_is_time :distance => (-5.days)..(1.week)
+  end
 
 ===unique
 Use when you need an attribute to be unique, possibly in the scope of some other attributes. By default this is not case sensitive.

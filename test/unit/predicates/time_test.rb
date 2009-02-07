@@ -43,4 +43,13 @@ class TimePredicateTest < Test::Unit::TestCase
     assert @predicate.validate(Time.parse('2006-06-01 00:00:00'), nil), 'may be inbetween'
     assert !@predicate.validate(Time.parse('2008-01-01 00:00:00'), nil), 'may not be after'
   end
+  
+  def test_validation_with_distance
+    @predicate.distance = (-1.hour)..(1.hour)
+    assert !@predicate.validate(61.minutes.ago, nil)
+    assert @predicate.validate(59.minutes.ago, nil)
+    assert @predicate.validate(Time.now, nil)
+    assert @predicate.validate(Time.now + 59.minutes, nil)
+    assert !@predicate.validate(Time.now + 61.minutes, nil)
+  end
 end
