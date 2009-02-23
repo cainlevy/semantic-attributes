@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
-class HexColorPredicateTest < Test::Unit::TestCase
+class HexColorPredicateTest < SemanticAttributes::TestCase
   def setup
     @predicate = Predicates::HexColor.new(:foo)
   end

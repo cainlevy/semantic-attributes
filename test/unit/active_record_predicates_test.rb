@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class ActiveRecordExtensionsTest < Test::Unit::TestCase
+class ActiveRecordExtensionsTest < SemanticAttributes::TestCase
   class FooUser < User
     attr_accessor :foo
   end

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class SemanticAttributesTest < Test::Unit::TestCase
+class SemanticAttributesTest < SemanticAttributes::TestCase
   def setup
     @set = SemanticAttributes::Set.new
   end

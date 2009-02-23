@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class InheritanceTest < Test::Unit::TestCase
+class InheritanceTest < SemanticAttributes::TestCase
   class Worker < User
     attr_accessor :name_tag
     name_tag_is_required

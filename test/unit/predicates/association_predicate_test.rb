@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
-class AssociationPredicateTest < Test::Unit::TestCase
+class AssociationPredicateTest < SemanticAttributes::TestCase
   def test_singular_associations
     predicate = Predicates::Association.new(:subscription)
     assert predicate.validate(users(:bob).subscription, users(:bob))

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class ValidationsTest < Test::Unit::TestCase
+class ValidationsTest < SemanticAttributes::TestCase
   def setup
     User.stub_semantics_with(:login => :required)
     @record = User.new

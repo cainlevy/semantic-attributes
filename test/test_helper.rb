@@ -10,6 +10,7 @@ end
 # load the support libraries
 require 'test/unit'
 require 'rubygems'
+gem 'rails', '2.3.0'
 require 'active_record'
 require 'active_record/fixtures'
 require 'mocha'
@@ -34,7 +35,8 @@ load(File.dirname(__FILE__) + "/db/schema.rb")
 require File.dirname(__FILE__) + '/db/models'
 
 # configure the TestCase settings
-class Test::Unit::TestCase
+class SemanticAttributes::TestCase < ActiveSupport::TestCase
+  include ActiveRecord::TestFixtures
   include PluginTestModels
 
   self.use_transactional_fixtures = true

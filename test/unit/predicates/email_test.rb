@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 require 'actionmailer'
 
-class EmailPredicateTest < Test::Unit::TestCase
+class EmailPredicateTest < SemanticAttributes::TestCase
   def setup
     @predicate = Predicates::Email.new(:foo)
   end

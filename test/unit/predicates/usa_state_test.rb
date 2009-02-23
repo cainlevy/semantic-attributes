@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
-class UsaStatePredicateTest < Test::Unit::TestCase
+class UsaStatePredicateTest < SemanticAttributes::TestCase
   def setup
     @predicate = Predicates::UsaState.new(:foo)
   end

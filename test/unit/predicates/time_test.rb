@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
-class TimePredicateTest < Test::Unit::TestCase
+class TimePredicateTest < SemanticAttributes::TestCase
   def setup
     @predicate = Predicates::Time.new(:foo)
   end

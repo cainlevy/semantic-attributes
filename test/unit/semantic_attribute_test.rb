@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class SemanticAttributeTest < Test::Unit::TestCase
+class SemanticAttributeTest < SemanticAttributes::TestCase
   def test_everything
     @field = SemanticAttributes::Attribute.new('a')
     assert_equal :a, @field.field

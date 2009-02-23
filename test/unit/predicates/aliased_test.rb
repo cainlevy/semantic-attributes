@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
-class AliasedPredicateTest < Test::Unit::TestCase
+class AliasedPredicateTest < SemanticAttributes::TestCase
   def setup
     @predicate = Predicates::Aliased.new(:foo, :options => {'10111001' => '185'})
   end

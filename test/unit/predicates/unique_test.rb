@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
-class UniquePredicateTest < Test::Unit::TestCase
+class UniquePredicateTest < SemanticAttributes::TestCase
   def setup
     User.stub_semantics_with(:login => :unique)
     @predicate = User.semantic_attributes[:login].get(:unique)

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
-class SameAsPredicateTest < Test::Unit::TestCase
+class SameAsPredicateTest < SemanticAttributes::TestCase
   def setup
     @predicate = Predicates::SameAs.new(:foo)
   end

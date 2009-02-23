@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class AttributeFormatsTest < Test::Unit::TestCase
+class AttributeFormatsTest < SemanticAttributes::TestCase
   class User < User
     cell_is_a_phone_number
   end

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
-class BlacklistedPredicateTest < Test::Unit::TestCase
+class BlacklistedPredicateTest < SemanticAttributes::TestCase
   def setup
     @predicate = Predicates::Blacklisted.new(:foo)
   end
