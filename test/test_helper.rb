@@ -1,12 +1,5 @@
 ENV["RAILS_ENV"] = "test"
 
-# the hackaround for Rails issue #802 requires a Rails.env check
-module Rails
-  def self.env
-    ENV["RAILS_ENV"]
-  end
-end
-
 # load the support libraries
 require 'test/unit'
 require 'rubygems'
