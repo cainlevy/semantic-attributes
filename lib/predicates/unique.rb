@@ -56,7 +56,7 @@ class Predicates::Unique < Predicates::Base
       if case_sensitive
         # case sensitive text comparison in any database
         ["#{quoted_field} #{klass.connection.case_sensitive_equality_operator} ?", value]
-      elsif mysql?(klass)
+      elsif mysql?(klass.connection)
         # case INsensitive text comparison in mysql - yes this is a database specific optimization. i'm always open to better ways. :)
         ["#{quoted_field} = ?", value]
       else
@@ -69,7 +69,7 @@ class Predicates::Unique < Predicates::Base
     end
   end
   
-  def mysql?(klass)
-    defined?(ActiveRecord::ConnectionAdapters::MysqlAdapter) and klass.is_a?(ActiveRecord::ConnectionAdapters::MysqlAdapter)
+  def mysql?(connection)
+    defined?(ActiveRecord::ConnectionAdapters::MysqlAdapter) and connection.is_a?(ActiveRecord::ConnectionAdapters::MysqlAdapter)
   end
 end
