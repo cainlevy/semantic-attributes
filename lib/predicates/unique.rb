@@ -23,27 +23,53 @@ class Predicates::Unique < Predicates::Base
     @error_message || "has already been taken."
   end
 
-  def validate(value, record)
-    fields_values = [[@attribute, value]]
-    [scope].flatten.each { |attribute| fields_values << [attribute, record.send(attribute)] }
+  def validate(value, record)  
+    klass = record.class
+  
+    # merge all the scope fields with this one. they must all be unique together.
+    # no special treatment -- case sensitivity applies to all or none.
+    values = [scope].flatten.collect{ |attr| [attr, record.send(attr)] }
+    values << [@attribute, value]
 
-    conditions_array = ['']
-    fields_values.each do |(attribute, attribute_value)|
-      field_sql = "#{record.class.table_name}.#{attribute}"
-      comparison_value = attribute_value
-
-      if record.class.columns_hash[attribute.to_s].text? and not self.case_sensitive
-        field_sql = "LOWER(#{field_sql})"
-        comparison_value = comparison_value.to_s.downcase unless comparison_value.nil?
-      end
-      field_sql << ' ' << record.class.send(:attribute_condition, comparison_value)
-
-      conditions_array.first << ' AND ' unless conditions_array.first.empty?
-      conditions_array.first << field_sql
-      conditions_array << comparison_value
+    conditions_sql = []
+    conditions_params = []
+    values.each do |(attr, attr_value)|
+      field_sql, comparison_value = *comparison_for(attr, attr_value, klass)
+      conditions_sql    << field_sql
+      conditions_params << comparison_value
+    end
+    
+    unless record.new_record?
+      conditions_sql    << "#{klass.quoted_table_name}.#{klass.primary_key} <> ?"
+      conditions_params << record.id
     end
 
-    result = record.class.find(:all, :conditions => conditions_array, :limit => 2)
-    return (result.size < 1 or result.first == record)
+    !klass.exists?([conditions_sql.join(" AND "), *conditions_params])
+  end
+  
+  protected
+  
+  def comparison_for(field, value, klass)
+    quoted_field = "#{klass.quoted_table_name}.#{klass.connection.quote_column_name(field)}"
+  
+    if klass.columns_hash[field.to_s].text?      
+      if case_sensitive
+        # case sensitive text comparison in any database
+        ["#{quoted_field} #{klass.connection.case_sensitive_equality_operator} ?", value]
+      elsif mysql?(klass)
+        # case INsensitive text comparison in mysql - yes this is a database specific optimization. i'm always open to better ways. :)
+        ["#{quoted_field} = ?", value]
+      else
+        # case INsensitive text comparison in most databases
+        ["LOWER(#{quoted_field}) = ?", value.to_s.downcase]
+      end
+    else
+      # non-text comparison
+      ["#{quoted_field} #{klass.send(:attribute_condition, value)}", value]
+    end
+  end
+  
+  def mysql?(klass)
+    defined?(ActiveRecord::ConnectionAdapters::MysqlAdapter) and klass.is_a?(ActiveRecord::ConnectionAdapters::MysqlAdapter)
   end
 end
