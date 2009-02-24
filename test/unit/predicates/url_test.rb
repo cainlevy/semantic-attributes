@@ -83,10 +83,4 @@ class UrlPredicateTest < SemanticAttributes::TestCase
     assert_equal 'example.com', @predicate.normalize('example.com')
     assert_equal 'example.com:80', @predicate.normalize('example.com:80')
   end
-
-  def test_error_message
-    assert_equal 'must be a valid URL.', @predicate.error_message
-    @predicate.error_message = 'foo  bar'
-    assert_equal 'foo  bar', @predicate.error_message
-  end
 end

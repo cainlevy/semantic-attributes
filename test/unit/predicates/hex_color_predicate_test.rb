@@ -5,10 +5,6 @@ class HexColorPredicateTest < SemanticAttributes::TestCase
     @predicate = Predicates::HexColor.new(:foo)
   end
 
-  def test_default_error_message
-    assert_equal @predicate.error_message, "must be a hex color."
-  end
-
   def test_normalize_conversions
     assert_equal "", @predicate.normalize("")
     assert_equal nil, @predicate.normalize(nil)

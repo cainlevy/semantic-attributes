@@ -6,7 +6,7 @@ class Predicates::HexColor < Predicates::Pattern
   end
 
   def error_message
-    @error_message ||= "must be a hex color."
+    @error_message ||= :hex
   end
 
   def normalize(value)

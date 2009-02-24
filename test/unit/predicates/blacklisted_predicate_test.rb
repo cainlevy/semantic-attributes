@@ -25,10 +25,4 @@ class BlacklistedPredicateTest < SemanticAttributes::TestCase
     assert !@predicate.validate('3', nil)
     assert @predicate.validate(6, nil)
   end
-  
-  def test_error_message
-    assert_equal "is not an allowed option.", @predicate.error_message
-    @predicate.error_message = 'foo'
-    assert_equal 'foo', @predicate.error_message
-  end
 end

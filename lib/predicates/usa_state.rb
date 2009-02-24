@@ -17,7 +17,7 @@ class Predicates::UsaState < Predicates::Aliased
   undef_method :options=
 
   def error_message
-    @error_message || "must be a US state#{' or territory' if with_territories?}."
+    @error_message || with_territories? ? :us_state_or_territory : :us_state
   end
 
   TERRITORIES = {

@@ -11,7 +11,6 @@ class UniquePredicateTest < SemanticAttributes::TestCase
   def test_defaults
     assert_equal false, @predicate.case_sensitive, 'case insensitive by default'
     assert_equal [], @predicate.scope, 'default scope is empty array'
-    assert_equal "has already been taken.", @predicate.error_message
   end
 
   def test_uniqueness_validation_scoping

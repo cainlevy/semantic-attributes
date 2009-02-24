@@ -18,12 +18,6 @@ class ValidationsTest < SemanticAttributes::TestCase
     assert_equal 'is required.', @record.errors[:login]
   end
 
-  def test_that_errors_are_localized
-    @record.expects(:_).returns("translated!")
-    @record.valid?
-    assert_equal "translated!", @record.errors[:login]
-  end
-
   def test_validate_on_default
     assert_equal :both, @record.semantic_attributes['login'].get('required').validate_on
   end

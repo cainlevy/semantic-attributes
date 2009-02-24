@@ -15,10 +15,6 @@
 class Predicates::Pattern < Predicates::Base
   attr_accessor :like
 
-  def error_message
-    @error_message ||= "is invalid."
-  end
-
   def validate(value, record)
     value = value.to_s if [Symbol, Fixnum].include?(value.class)
     value.match(self.like)

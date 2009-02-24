@@ -5,12 +5,6 @@ class TimePredicateTest < SemanticAttributes::TestCase
     @predicate = Predicates::Time.new(:foo)
   end
 
-  def test_error_message
-    assert_equal 'must be a point in time.', @predicate.error_message
-    @predicate.error_message = 'foo'
-    assert_equal 'foo', @predicate.error_message
-  end
-
   def test_default_validation
     assert !@predicate.validate('2007-07-19 00:00:00', nil), 'value may not be a string, even if string parses'
     assert !@predicate.validate(1184817600, nil), 'value must not be a timestamp'

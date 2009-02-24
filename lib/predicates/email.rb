@@ -27,7 +27,7 @@ class Predicates::Email < Predicates::Base
   end
 
   def error_message
-    @error_message || 'must be an email address.'
+    @error_message || :email
   end
 
   EmailAddressPattern = begin

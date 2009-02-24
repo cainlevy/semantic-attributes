@@ -26,6 +26,8 @@ class BasePredicateTest < SemanticAttributes::TestCase
   def test_default_values
     assert @predicate.allow_empty?, "allow empty/nil values by default"
     assert_equal :both, @predicate.validate_on, "validate on create and update by default"
+    assert_equal :invalid, @predicate.error_message, "error message is a bland :invalid by default"
+    assert_equal Hash.new, @predicate.error_binds, "there are no binds by default"
   end
 
   def test_or_empty

@@ -8,9 +8,9 @@ class Predicates::SameAs < Predicates::Base
   attr_accessor :method
 
   def error_message
-    @error_message ||= "must be the same as #{method}."
+    @error_message ||= :same_as
   end
-
+  
   def validate(value, record)
     value == record.send(self.method)
   end

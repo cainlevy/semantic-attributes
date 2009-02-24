@@ -6,9 +6,4 @@ ActiveRecord::Base.class_eval do
   include ActiveRecord::ValidationRecursionControl
 end
 
-# localization mock
-ActiveRecord::Base.class_eval do
-  unless respond_to? :_
-    def _(s); s; end
-  end
-end
+I18n.load_path << File.dirname(__FILE__) + '/lib/semantic_attributes/locale/en.yml'

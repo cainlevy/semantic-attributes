@@ -15,7 +15,7 @@ class Predicates::Association < Predicates::Base
   attr_accessor :max
 
   def error_message
-    @error_message || 'is required.'
+    @error_message || :required
   end
 
   def validate(value, record)

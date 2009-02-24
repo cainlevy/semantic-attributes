@@ -5,12 +5,6 @@ class DomainPredicateTest < SemanticAttributes::TestCase
     @predicate = Predicates::Domain.new(:foo)
   end
 
-  def test_error_message
-    assert_equal 'must be a simple domain.', @predicate.error_message
-    @predicate.error_message = 'foo'
-    assert_equal 'foo', @predicate.error_message
-  end
-
   def test_valid_domains
     %w(example.com www.example.com).each do |domain|
       assert @predicate.validate(domain, nil), "#{domain} is a valid domain"

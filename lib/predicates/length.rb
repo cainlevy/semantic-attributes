@@ -24,7 +24,13 @@ class Predicates::Length < Predicates::Base
   attr_accessor :exactly
 
   def error_message
-    @error_message || "must be #{range_description} characters long."
+    @error_message || range_description
+  end
+  
+  def error_binds
+    self.range ?
+      {:min => self.range.first, :max => self.range.last} :
+      {:min => self.above, :max => self.below, :count => self.exactly}
   end
 
   def validate(value, record)
@@ -52,10 +58,10 @@ class Predicates::Length < Predicates::Base
   end
   
   def range_description
-    return self.exactly.to_s if self.exactly
-    return "#{self.range.first} to #{self.range.last}" if self.range
-    return "more than #{self.above}" if self.above
-    return "less than #{self.below}" if self.below
+    return :inexact_length if self.exactly
+    return :wrong_length if self.range
+    return :too_short if self.above
+    return :too_long if self.below
     raise 'undetermined range'
   end
 end

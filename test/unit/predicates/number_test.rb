@@ -6,9 +6,7 @@ class NumberPredicateTest < SemanticAttributes::TestCase
   end
 
   def test_basic_error_message
-    assert_equal 'must be a number.', @predicate.error_message
-    @predicate.error_message = 'foo'
-    assert_equal 'foo', @predicate.error_message
+    assert_equal :not_a_number, @predicate.error_message
   end
 
   def test_integers
@@ -38,7 +36,7 @@ class NumberPredicateTest < SemanticAttributes::TestCase
 
   def test_min
     @predicate.above = 5
-    assert_equal 'must be a number greater than 5.', @predicate.error_message
+    assert_equal :greater_than, @predicate.error_message
 
     assert !@predicate.validate(-10, nil)
     assert !@predicate.validate(-5, nil)
@@ -55,7 +53,7 @@ class NumberPredicateTest < SemanticAttributes::TestCase
     @predicate.at_least = 5
     assert_equal 5, @predicate.above
     assert @predicate.inclusive
-    assert_equal 'must be a number at least 5.', @predicate.error_message
+    assert_equal :greater_than_or_equal_to, @predicate.error_message
 
     assert !@predicate.validate(4, nil)
     assert @predicate.validate(5, nil)
@@ -63,7 +61,7 @@ class NumberPredicateTest < SemanticAttributes::TestCase
 
   def test_max
     @predicate.below = 5
-    assert_equal 'must be a number less than 5.', @predicate.error_message
+    assert_equal :less_than, @predicate.error_message
 
     assert @predicate.validate(-10, nil)
     assert @predicate.validate(-5, nil)
@@ -80,7 +78,7 @@ class NumberPredicateTest < SemanticAttributes::TestCase
     @predicate.no_more_than = 5
     assert_equal 5, @predicate.below
     assert @predicate.inclusive
-    assert_equal 'must be a number no more than 5.', @predicate.error_message
+    assert_equal :less_than_or_equal_to, @predicate.error_message
 
     assert @predicate.validate(5, nil)
     assert !@predicate.validate(6, nil)
@@ -88,7 +86,7 @@ class NumberPredicateTest < SemanticAttributes::TestCase
 
   def test_range
     @predicate.range = -5...5
-    assert_equal 'must be a number from -5 to 5.', @predicate.error_message
+    assert_equal :between, @predicate.error_message
 
     assert !@predicate.validate(-10, nil)
     assert @predicate.validate(-5, nil)
@@ -103,7 +101,7 @@ class NumberPredicateTest < SemanticAttributes::TestCase
 
   def test_range_inclusive
     @predicate.range = -5..5
-    assert_equal 'must be a number from -5 through 5.', @predicate.error_message
+    assert_equal :between, @predicate.error_message
 
     assert @predicate.validate(5, nil)
     assert !@predicate.validate(6, nil)

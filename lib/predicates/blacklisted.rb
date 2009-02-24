@@ -10,7 +10,7 @@ class Predicates::Blacklisted < Predicates::Base
   attr_accessor :restricted
 
   def error_message
-    @error_message || "is not an allowed option."
+    @error_message || :exclusion
   end
 
   def validate(val, record)

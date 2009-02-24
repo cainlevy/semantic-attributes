@@ -38,6 +38,5 @@ class UsaZipCodePredicateTest < SemanticAttributes::TestCase
 
   def test_defaults
     assert !@predicate.extended
-    assert_equal 'must be a US zip code.', @predicate.error_message
   end
 end

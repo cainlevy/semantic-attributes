@@ -33,7 +33,7 @@ class Predicates::Url < Predicates::Base
   end
 
   def error_message
-    @error_message || 'must be a valid URL.'
+    @error_message || :url
   end
 
   def validate(value, record)

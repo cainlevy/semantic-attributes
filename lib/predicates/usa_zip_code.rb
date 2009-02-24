@@ -20,6 +20,6 @@ class Predicates::UsaZipCode < Predicates::Pattern
   undef_method :like=
 
   def error_message
-    @error_message || 'must be a US zip code.'
+    @error_message || :us_zip_code
   end
 end

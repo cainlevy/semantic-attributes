@@ -13,8 +13,20 @@ module Predicates
     ##
 
     # the error string when validation fails
-    attr_accessor :error_message
+    def error_message
+      @error_message || :invalid
+    end
+    attr_writer :error_message
     alias_accessor :message, :error_message
+
+    # available interpolation variables for the error message (see I18n.translate)
+    def error_binds
+      {}
+    end
+    
+    def error
+      I18n.t(error_message, error_binds.merge(:scope => 'semantic-attributes.errors.messages'))
+    end
 
     # a condition to restrict when validation should occur. if it returns false, the validation will not happen.
     # if the value is a proc, then the proc will be called and the record object passed as the argument

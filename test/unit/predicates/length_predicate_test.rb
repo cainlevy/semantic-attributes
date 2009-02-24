@@ -7,7 +7,7 @@ class LengthPredicateTest < SemanticAttributes::TestCase
 
   def test_range
     @predicate.range = 1..5
-    assert_equal 'must be 1 to 5 characters long.', @predicate.error_message
+    assert_equal :wrong_length, @predicate.error_message
 
     assert !@predicate.validate('', nil)
     assert @predicate.validate('1', nil)
@@ -15,13 +15,13 @@ class LengthPredicateTest < SemanticAttributes::TestCase
     assert !@predicate.validate('123456', nil)
 
     @predicate.range = 1...5
-    assert_equal 'must be 1 to 5 characters long.', @predicate.error_message, 'same message for inclusive range'
+    assert_equal :wrong_length, @predicate.error_message, 'same message for inclusive range'
     assert !@predicate.validate('12345', nil)
   end
 
   def test_min
     @predicate.above = 5
-    assert_equal 'must be more than 5 characters long.', @predicate.error_message
+    assert_equal :too_short, @predicate.error_message
 
     assert !@predicate.validate('', nil)
     assert !@predicate.validate('12345', nil)
@@ -30,7 +30,7 @@ class LengthPredicateTest < SemanticAttributes::TestCase
 
   def test_max
     @predicate.below = 5
-    assert_equal 'must be less than 5 characters long.', @predicate.error_message
+    assert_equal :too_long, @predicate.error_message
 
     assert @predicate.validate('', nil)
     assert @predicate.validate('1234', nil)
@@ -39,7 +39,7 @@ class LengthPredicateTest < SemanticAttributes::TestCase
 
   def test_exact
     @predicate.exactly = 5
-    assert_equal 'must be 5 characters long.', @predicate.error_message
+    assert_equal :inexact_length, @predicate.error_message
 
     assert !@predicate.validate('', nil)
     assert !@predicate.validate('1234', nil)

@@ -24,7 +24,7 @@ class Predicates::Time < Predicates::Base
   attr_accessor :distance
 
   def error_message
-    @error_message || "must be a point in time."
+    @error_message || :time
   end
 
   def validate(value, record)

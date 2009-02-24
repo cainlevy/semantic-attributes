@@ -11,7 +11,7 @@ class UsaStatePredicateTest < SemanticAttributes::TestCase
 
   def test_with_territories
     @predicate.with_territories = true
-    assert_equal 'must be a US state or territory.', @predicate.error_message
+    assert_equal :us_state_or_territory, @predicate.error_message
 
     assert @predicate.options.include?('Guam')
     assert @predicate.options.include?('Minnesota')
@@ -19,7 +19,7 @@ class UsaStatePredicateTest < SemanticAttributes::TestCase
 
   def test_without_territories
     @predicate.with_territories = false
-    assert_equal 'must be a US state.', @predicate.error_message
+    assert_equal :us_state, @predicate.error_message
 
     assert !@predicate.options.include?('Guam')
     assert @predicate.options.include?('Minnesota')

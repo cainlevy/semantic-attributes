@@ -42,7 +42,13 @@ class Predicates::Number < Predicates::Base
   end
 
   def error_message
-    @error_message || "must be a number#{range_description}."
+    @error_message || range_description
+  end
+  
+  def error_binds
+    self.range ?
+      {:min => self.range.first, :max => self.range.last} :
+      {:min => self.above, :max => self.below}
   end
 
   def validate(value, record)
@@ -80,16 +86,19 @@ class Predicates::Number < Predicates::Base
 
   def range_description
     # if it has two endpoints
-    return " from #{self.range.first} #{self.range.exclude_end? ? 'to' : 'through'} #{self.range.last}" if self.range
+    if self.range
+      return :between
+    end
     # if it only has one inclusive endpoint
     if inclusive
-      return " at least #{self.above}" if self.above
-      return " no more than #{self.below}" if self.below
+      return :greater_than_or_equal_to if self.above
+      return :less_than_or_equal_to if self.below
     # if it only has one exclusive endpoint
     else
-      return " greater than #{self.above}" if self.above
-      return " less than #{self.below}" if self.below
+      return :greater_than if self.above
+      return :less_than if self.below
     end
     # if it has no endpoints
+    :not_a_number
   end
 end

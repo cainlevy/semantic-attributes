@@ -80,10 +80,4 @@ class EmailPredicateTest < SemanticAttributes::TestCase
     assert !@predicate.validate('test@example.com', nil), 'syntax and mx check'
     assert @predicate.validate('test@gmail.com', nil)
   end
-
-  def test_error_message
-    assert_equal 'must be an email address.', @predicate.error_message
-    @predicate.error_message = 'foo'
-    assert_equal 'foo', @predicate.error_message
-  end
 end

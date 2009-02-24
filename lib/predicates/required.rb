@@ -13,7 +13,7 @@ class Predicates::Required < Predicates::Base
   end
 
   def error_message
-    @error_message || 'is required.'
+    @error_message || :required
   end
 
   def validate(value, record)

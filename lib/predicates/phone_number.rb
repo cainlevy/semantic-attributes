@@ -14,7 +14,7 @@ class Predicates::PhoneNumber < Predicates::Base
   end
 
   def error_message
-    @error_message ||= "must be a phone number."
+    @error_message ||= :phone
   end
 
   def validate(value, record)

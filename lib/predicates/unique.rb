@@ -20,7 +20,7 @@ class Predicates::Unique < Predicates::Base
   end
 
   def error_message
-    @error_message || "has already been taken."
+    @error_message || :taken
   end
 
   def validate(value, record)  

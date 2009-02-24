@@ -3,7 +3,7 @@ require 'uri'
 # Defines a field as a simple domain (not URL).
 class Predicates::Domain < Predicates::Base
   def error_message
-    @error_message || "must be a simple domain."
+    @error_message || :domain
   end
 
   def validate(value, record)

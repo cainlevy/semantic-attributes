@@ -26,12 +26,12 @@ module SemanticAttributes
         applicable_predicates.each do |predicate|
           if value.blank?
             # it's empty, so add an error or not but either way move along
-            self.errors.add(attribute.field, _(predicate.error_message)) unless predicate.allow_empty?
+            self.errors.add(attribute.field, predicate.error) unless predicate.allow_empty?
             next
           end
 
           unless predicate.validate(value, self)
-            self.errors.add(attribute.field, _(predicate.error_message))
+            self.errors.add(attribute.field, predicate.error)
           end
         end
       end
