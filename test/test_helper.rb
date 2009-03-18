@@ -3,7 +3,7 @@ ENV["RAILS_ENV"] = "test"
 # load the support libraries
 require 'test/unit'
 require 'rubygems'
-gem 'rails', '2.3.0'
+gem 'rails', '2.3.2'
 require 'active_record'
 require 'active_record/fixtures'
 require 'mocha'

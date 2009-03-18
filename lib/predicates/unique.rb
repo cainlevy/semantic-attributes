@@ -65,7 +65,7 @@ class Predicates::Unique < Predicates::Base
       end
     else
       # non-text comparison
-      ["#{quoted_field} #{klass.send(:attribute_condition, value)}", value]
+      [klass.send(:attribute_condition, quoted_field, value), value]
     end
   end
   
