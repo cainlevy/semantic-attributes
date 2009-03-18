@@ -25,7 +25,7 @@ module Predicates
     end
     
     def error
-      I18n.t(error_message, error_binds.merge(:scope => 'semantic-attributes.errors.messages'))
+      error_message.is_a?(Symbol) ? I18n.t(error_message, error_binds.merge(:scope => 'semantic-attributes.errors.messages')) : error_message
     end
 
     # a condition to restrict when validation should occur. if it returns false, the validation will not happen.

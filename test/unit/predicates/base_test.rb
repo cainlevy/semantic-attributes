@@ -44,4 +44,10 @@ class BasePredicateTest < SemanticAttributes::TestCase
     predicate.message = "another thing"
     assert_equal "another thing", predicate.error_message
   end
+  
+  def test_string_errors_are_preserved
+    predicate = Predicates::Base.new(:foo)
+    predicate.error_message = "something"
+    assert_equal "something", predicate.error
+  end
 end
