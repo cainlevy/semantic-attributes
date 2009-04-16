@@ -8,6 +8,10 @@ class Predicates::Aliased < Predicates::Enumerated
     options[v]
   end
 
+  def validate(value, record)
+    self.options.has_value? value
+  end
+
   def normalize(v)
     options.index(v)
   end

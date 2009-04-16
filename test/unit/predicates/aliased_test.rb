@@ -9,4 +9,9 @@ class AliasedPredicateTest < SemanticAttributes::TestCase
     assert_equal '185', @predicate.to_human('10111001')
     assert_equal '10111001', @predicate.normalize('185')
   end
+
+  def test_validation
+    assert @predicate.validate('185', nil)
+    assert !@predicate.validate('10111001', nil)
+  end
 end
