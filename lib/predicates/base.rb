@@ -24,8 +24,18 @@ module Predicates
       {}
     end
     
+    # a message that won't be pre-interpolated by semantic-attributes, so that it
+    # can work with ActiveRecord::Error#generate_full_message's translation lookup
+    attr_accessor :full_message
+    
     def error
-      error_message.is_a?(Symbol) ? I18n.t(error_message, error_binds.merge(:scope => 'semantic-attributes.errors.messages')) : error_message
+      if full_message
+        full_message
+      elsif error_message.is_a?(Symbol)
+        I18n.t(error_message, error_binds.merge(:scope => 'semantic-attributes.errors.messages'))
+      else
+        error_message
+      end
     end
 
     # a condition to restrict when validation should occur. if it returns false, the validation will not happen.
