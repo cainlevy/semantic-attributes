@@ -47,6 +47,10 @@ class Predicates::Length < Predicates::Base
       true
     end
   end
+  
+  def normalize(v)
+    (v and v.is_a? String) ? v.gsub("\r\n", "\n") : v
+  end
 
   protected
   

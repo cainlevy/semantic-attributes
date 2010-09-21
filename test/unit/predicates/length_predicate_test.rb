@@ -71,6 +71,11 @@ class LengthPredicateTest < SemanticAttributes::TestCase
     assert @predicate.validate('ægis', nil)
     assert !@predicate.validate('aegis', nil)
   end
+  
+  def test_normalization
+    assert_equal "hello\nworld", @predicate.normalize("hello\r\nworld")
+    assert_equal ['a', 'b'], @predicate.normalize(['a', 'b'])
+  end
 
   def test_no_options
     assert_raise RuntimeError do @predicate.error_message end
