@@ -33,7 +33,7 @@ class Predicates::Time < Predicates::Base
     valid &&= (value > self.after) if self.after
     
     if self.distance
-      now = Time.now.utc
+      now = Time.now
       valid &&= (value >= now + self.distance.begin)
       valid &&= (value <= now + self.distance.end)
     end
