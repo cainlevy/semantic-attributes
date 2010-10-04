@@ -43,7 +43,7 @@ class ActiveRecordExtensionsTest < SemanticAttributes::TestCase
   
   def test_declarative_sugar_catches_unknown_attributes
     @klass = FooUser
-    assert_raises NameError do
+    assert_raises SemanticAttributes::MissingAttribute do
       @klass.unknown_is_required
     end
   end

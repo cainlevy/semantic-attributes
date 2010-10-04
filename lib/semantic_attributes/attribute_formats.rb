@@ -1,4 +1,10 @@
 module SemanticAttributes #:nodoc:
+  class MissingAttribute < NameError
+    def initialize(attr)
+      super("#{attr} is not defined. You may have a typo or need to run migrations.")
+    end
+  end
+
   module AttributeFormats
     def self.included(base)
       base.extend ClassMethods
@@ -53,8 +59,7 @@ module SemanticAttributes #:nodoc:
           alias_method_chain "#{attr}=", :normalization
         end
       rescue NameError
-        # so the top line of the backtrace shows the proper method
-        raise NameError, $!.message, caller[4..-1]
+        raise SemanticAttributes::MissingAttribute.new(attr)
       end
 
     end
