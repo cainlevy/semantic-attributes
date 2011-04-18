@@ -3,7 +3,7 @@ ENV["RAILS_ENV"] = "test"
 # load the support libraries
 require 'test/unit'
 require 'rubygems'
-gem 'rails', '2.3.2'
+gem 'rails', '2.3.11'
 require 'active_record'
 require 'active_record/fixtures'
 require 'mocha'
@@ -18,7 +18,7 @@ ActiveRecord::Base.establish_connection('semantic_attributes_test')
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/test.log")
 
 # load the code-to-be-tested
-ActiveSupport::Dependencies.load_paths << File.dirname(__FILE__) + '/../lib/'
+ActiveSupport::Dependencies.autoload_paths << File.dirname(__FILE__) + '/../lib/'
 $LOAD_PATH.unshift         File.dirname(__FILE__) + '/../lib/'
 require File.dirname(__FILE__) + '/../init'
 
