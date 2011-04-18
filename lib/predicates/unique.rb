@@ -70,6 +70,7 @@ class Predicates::Unique < Predicates::Base
   end
   
   def mysql?(connection)
-    defined?(ActiveRecord::ConnectionAdapters::MysqlAdapter) and connection.is_a?(ActiveRecord::ConnectionAdapters::MysqlAdapter)
+    (defined?(ActiveRecord::ConnectionAdapters::MysqlAdapter) and connection.is_a?(ActiveRecord::ConnectionAdapters::MysqlAdapter)) or
+      (defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter) and connection.is_a?(ActiveRecord::ConnectionAdapters::Mysql2Adapter))
   end
 end
