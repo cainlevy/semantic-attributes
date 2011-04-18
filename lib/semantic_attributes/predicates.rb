@@ -23,8 +23,14 @@ module SemanticAttributes
         next if applicable_predicates.empty?
 
         # skip validations on associations that aren't already loaded
+        # note: it's not worth skipping a has_one, since there's no way to distinguish
+        # between loaded and absent without a query.
         if reflection = self.class.reflect_on_association(attribute.field.to_sym)
-          next unless (reflection.collection? and self.send(attribute.field).loaded?) or self.send("loaded_#{attribute.field}?")
+          if reflection.collection?
+            next unless self.send(attribute.field).loaded?
+          elsif reflection.macro == :belongs_to and self[reflection.primary_key_name]
+            next unless self.send("loaded_#{attribute.field}?")
+          end
         end
 
         value = self.send(attribute.field)
