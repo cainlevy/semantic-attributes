@@ -48,7 +48,7 @@ class Predicates::Url < Predicates::Base
     valid &&= (self.allow_ip_address or not url.host =~ /^([0-9]{1,3}\.){3}[0-9]{1,3}$/)
 
     valid
-  rescue URI::InvalidURIError
+  rescue URI::InvalidURIError, URI::InvalidComponentError
     false
   end
 
@@ -56,7 +56,7 @@ class Predicates::Url < Predicates::Base
     url = URI.parse(v)
     url = URI.parse("#{self.implied_scheme}://#{v}") if self.implied_scheme and not (url.scheme and url.host)
     url.to_s
-  rescue URI::InvalidURIError
+  rescue URI::InvalidURIError, URI::InvalidComponentError
     v
   end
 end
