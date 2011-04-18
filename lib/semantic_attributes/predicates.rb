@@ -19,9 +19,14 @@ module SemanticAttributes
     def validate_predicates
       semantic_attributes.each do |attribute|
         applicable_predicates = attribute.predicates.select{|p| validate_predicate?(p)}
-        
+
         next if applicable_predicates.empty?
-        
+
+        # skip validations on associations that aren't already loaded
+        if reflection = self.class.reflect_on_association(attribute.field.to_sym)
+          next unless (reflection.collection? and self.send(attribute.field).loaded?) or self.send("loaded_#{attribute.field}?")
+        end
+
         value = self.send(attribute.field)
         applicable_predicates.each do |predicate|
           if value.blank?
