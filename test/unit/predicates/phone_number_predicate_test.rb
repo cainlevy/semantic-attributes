@@ -36,5 +36,6 @@ class PhoneNumberPredicateTest < SemanticAttributes::TestCase
     assert_equal '+992223334444', @predicate.normalize('2223334444'), 'adds implied country code'
     assert_equal '+12223334444', @predicate.normalize('1 (222) 333.4444'), 'ignores various formatting characters'
     assert_equal '+992223334444', @predicate.normalize('222typo333oops4444'), 'ignores non-numeric characters'
+    assert_equal '', @predicate.normalize(''), 'leaves blanks intact'
   end
 end

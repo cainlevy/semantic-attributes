@@ -45,6 +45,8 @@ class Predicates::PhoneNumber < Predicates::Base
 
   # strip out all non-numeric characters except a leading +
   def normalize(value)
+    return value if value.blank?
+
     value = "+#{value}" if value.to_s[0..0] == '1' # north american bias
     value = "+#{implied_country_code}#{value}" unless value.to_s[0..0] == '+'
 
