@@ -48,7 +48,7 @@ module SemanticAttributes #:nodoc:
       protected
 
       def define_normalization_method_for(attr)
-        self.define_attribute_methods if self.respond_to? :generated_methods? and !self.generated_methods?
+        self.define_attribute_methods if self.respond_to? :attribute_methods_generated? and !self.attribute_methods_generated?
         
         writer = "#{attr}_with_normalization="
         old_writer = "#{attr}_without_normalization=".to_sym

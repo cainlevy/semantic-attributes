@@ -14,8 +14,8 @@ class ValidationsTest < SemanticAttributes::TestCase
 
   def test_validation_errors
     assert !@record.valid?
-    assert @record.errors.on(:login)
-    assert_equal 'is required.', @record.errors[:login]
+    assert @record.errors[:login]
+    assert_equal ['is required.'], @record.errors[:login]
   end
 
   def test_validate_on_default
@@ -115,7 +115,7 @@ class ValidationsTest < SemanticAttributes::TestCase
     [nil, '', []].each do |empty_value|
       @record.login = empty_value
       assert !@record.valid?
-      assert @record.errors.on(:login)
+      assert @record.errors[:login]
     end
   end
 end

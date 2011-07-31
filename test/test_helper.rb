@@ -3,9 +3,10 @@ ENV["RAILS_ENV"] = "test"
 # load the support libraries
 require 'test/unit'
 require 'rubygems'
-gem 'rails', '2.3.11'
+gem 'rails', '3.0.7'
 require 'active_record'
 require 'active_record/fixtures'
+require 'active_support/time'
 require 'mocha'
 
 Time.zone = 'UTC'

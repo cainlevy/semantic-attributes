@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
-require 'actionmailer'
 
 class EmailPredicateTest < SemanticAttributes::TestCase
   def setup

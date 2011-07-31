@@ -45,7 +45,7 @@ class UniquePredicateTest < SemanticAttributes::TestCase
 
     bobs_second_subscription = Subscription.new(:user => users(:bob), :service => services(:premium))
     assert !bobs_second_subscription.valid?
-    assert bobs_second_subscription.errors.on(:user_id)
+    assert bobs_second_subscription.errors[:user_id]
   end
 
   def test_case_insensitive_is_non_destructive

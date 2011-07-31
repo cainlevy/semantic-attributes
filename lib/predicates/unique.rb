@@ -31,41 +31,36 @@ class Predicates::Unique < Predicates::Base
     values = [scope].flatten.collect{ |attr| [attr, record.send(attr)] }
     values << [@attribute, value]
 
-    conditions_sql = []
-    conditions_params = []
-    values.each do |(attr, attr_value)|
-      field_sql, comparison_value = *comparison_for(attr, attr_value, klass)
-      conditions_sql    << field_sql
-      conditions_params << comparison_value
-    end
-    
-    unless record.new_record?
-      conditions_sql    << "#{klass.quoted_table_name}.#{klass.primary_key} <> ?"
-      conditions_params << record.id
+    sql = values.map do |(attr, attr_value)|
+      comparison_for(attr, attr_value, klass)
     end
 
-    !klass.exists?([conditions_sql.join(" AND "), *conditions_params])
+    unless record.new_record?
+      sql << klass.send(:sanitize_sql, ["#{klass.quoted_table_name}.#{klass.primary_key} <> ?", record.id])
+    end
+
+    !klass.where(sql.join(" AND ")).exists?
   end
   
   protected
   
   def comparison_for(field, value, klass)
     quoted_field = "#{klass.quoted_table_name}.#{klass.connection.quote_column_name(field)}"
-  
-    if klass.columns_hash[field.to_s].text?      
+
+    if klass.columns_hash[field.to_s].text?
       if case_sensitive
         # case sensitive text comparison in any database
-        ["#{quoted_field} #{klass.connection.case_sensitive_equality_operator} ?", value]
+        klass.send(:sanitize_sql, ["#{quoted_field} #{klass.connection.case_sensitive_equality_operator} ?", value])
       elsif mysql?(klass.connection)
         # case INsensitive text comparison in mysql - yes this is a database specific optimization. i'm always open to better ways. :)
-        ["#{quoted_field} = ?", value]
+        klass.send(:sanitize_sql, ["#{quoted_field} = ?", value])
       else
         # case INsensitive text comparison in most databases
-        ["LOWER(#{quoted_field}) = ?", value.to_s.downcase]
+        klass.send(:sanitize_sql, ["LOWER(#{quoted_field}) = ?", value.to_s.downcase])
       end
     else
       # non-text comparison
-      [klass.send(:attribute_condition, quoted_field, value), value]
+      klass.send(:sanitize_sql, {field => value})
     end
   end
   
