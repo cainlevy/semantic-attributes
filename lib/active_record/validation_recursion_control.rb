@@ -10,8 +10,8 @@ module ValidationRecursionControl #:nodoc:
   # is suppose that if a record's validity depends in some way on itself, then we
   # can assume that circular condition is satisfied. That assumption will change
   # nothing about the actual validity of the record.
-  def valid_with_recursion_control?
-    assumed_valid? or with_recursion_control do valid_without_recursion_control? end
+  def valid_with_recursion_control?(*args, &block)
+    assumed_valid? or with_recursion_control do valid_without_recursion_control?(*args, &block) end
   end
 
   private
