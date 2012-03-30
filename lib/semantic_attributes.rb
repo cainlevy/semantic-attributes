@@ -1,3 +1,4 @@
+I18n.load_path << File.dirname(__FILE__) + '/semantic_attributes/locale/en.yml'
 require 'core_ext/class'
 
 module SemanticAttributes
@@ -23,3 +24,5 @@ module SemanticAttributes
     end
   end
 end
+
+SemanticAttributes::Railtie.insert

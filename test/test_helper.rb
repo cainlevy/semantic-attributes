@@ -19,7 +19,7 @@ ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/test.log")
 # load the code-to-be-tested
 ActiveSupport::Dependencies.autoload_paths << File.dirname(__FILE__) + '/../lib/'
 $LOAD_PATH.unshift         File.dirname(__FILE__) + '/../lib/'
-require File.dirname(__FILE__) + '/../init'
+require 'semantic_attributes'
 
 # load the schema ... silently
 ActiveRecord::Migration.verbose = false
