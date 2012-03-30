@@ -7,6 +7,9 @@ require 'active_record'
 require 'active_record/fixtures'
 require 'active_support/time'
 
+# load the code-to-be-tested
+require 'semantic_attributes'
+
 Time.zone = 'UTC'
 
 # establish the database connection
@@ -15,11 +18,6 @@ ActiveRecord::Base.establish_connection('semantic_attributes_test')
 
 # capture the logging
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/test.log")
-
-# load the code-to-be-tested
-ActiveSupport::Dependencies.autoload_paths << File.dirname(__FILE__) + '/../lib/'
-$LOAD_PATH.unshift         File.dirname(__FILE__) + '/../lib/'
-require 'semantic_attributes'
 
 # load the schema ... silently
 ActiveRecord::Migration.verbose = false
