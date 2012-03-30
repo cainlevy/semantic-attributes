@@ -80,7 +80,7 @@ module SemanticAttributes
 
     module ClassMethods
       def semantic_attributes
-        @semantic_attributes
+        @semantic_attributes ||= SemanticAttributes::Set.new
       end
 
       def semantic_attributes=(val)

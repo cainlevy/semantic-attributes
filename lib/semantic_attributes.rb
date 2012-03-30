@@ -29,28 +29,6 @@ require 'semantic_attributes/predicates'
 require 'semantic_attributes/set'
 require 'semantic_attributes/version'
 
-module SemanticAttributes
-  if defined? Rails::Railtie
-    require 'rails'
-    class Railtie < Rails::Railtie
-      initializer 'semantic_attributes.insert_into_active_record' do
-        ActiveSupport.on_load :active_record do
-          SemanticAttributes::Railtie.insert
-        end
-      end
-      # rake_tasks do
-      #   load "tasks/semantic_attributes.rake"
-      # end
-    end
-  end
-
-  class Railtie
-    def self.insert
-      ActiveRecord::Base.send(:include, SemanticAttributes::Predicates)
-      ActiveRecord::Base.send(:include, SemanticAttributes::AttributeFormats)
-      ActiveRecord::Base.send(:include, ActiveRecord::ValidationRecursionControl)
-    end
-  end
-end
-
-SemanticAttributes::Railtie.insert
+ActiveRecord::Base.send(:include, SemanticAttributes::Predicates)
+ActiveRecord::Base.send(:include, SemanticAttributes::AttributeFormats)
+ActiveRecord::Base.send(:include, ActiveRecord::ValidationRecursionControl)
