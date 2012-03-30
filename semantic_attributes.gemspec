@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.authors = ["Lance Ivy"]
   s.email = 'lance@kickstarter.com'
   s.platform = Gem::Platform::RUBY
-  s.homepage = %q{http://github.com/kickstarter/semantic_attributes}
+  s.homepage = %q{http://github.com/kickstarter/semantic-attributes}
   s.require_paths = ["lib"]
   s.summary = 'A validation library that allows introspection' +
     '(User.name_is_required?) and supports database normalization ' + 
