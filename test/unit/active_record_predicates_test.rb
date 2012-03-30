@@ -6,7 +6,7 @@ class ActiveRecordExtensionsTest < SemanticAttributes::TestCase
   end
   
   def setup
-    FooUser.write_inheritable_attribute(:semantic_attributes, nil)
+    FooUser.semantic_attributes = nil
   end
 
   def test_module

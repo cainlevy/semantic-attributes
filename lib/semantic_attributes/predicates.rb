@@ -4,9 +4,8 @@ module SemanticAttributes
     def self.included(base)
       base.class_eval do
         extend ClassMethods
-
+        base.semantic_attributes = SemanticAttributes::Set.new
         attribute_method_suffix '_valid?'
-
         validate :validate_predicates
       end
     end
@@ -27,9 +26,9 @@ module SemanticAttributes
         # between loaded and absent without a query.
         if reflection = self.class.reflect_on_association(attribute.field.to_sym)
           if reflection.collection?
-            next unless self.send(attribute.field).loaded?
-          elsif reflection.macro == :belongs_to and self[reflection.primary_key_name]
-            next unless self.send("loaded_#{attribute.field}?")
+            next unless self.association(attribute.field).loaded?
+          elsif reflection.macro == :belongs_to and self[reflection.foreign_key]
+            next unless self.association(attribute.field).loaded?
           end
         end
 
@@ -49,7 +48,6 @@ module SemanticAttributes
     end
 
     protected
-
     # Returns true if this attribute would pass validation during the next save.
     # Intended to be called via attribute suffix, like:
     #   User#login_valid?
@@ -82,7 +80,16 @@ module SemanticAttributes
 
     module ClassMethods
       def semantic_attributes
-        read_inheritable_attribute(:semantic_attributes) || write_inheritable_attribute(:semantic_attributes, SemanticAttributes::Set.new)
+        @semantic_attributes
+      end
+
+      def semantic_attributes=(val)
+        @semantic_attributes = val || SemanticAttributes::Set.new
+      end
+ 
+      def inherited(klass)
+        klass.semantic_attributes = self.semantic_attributes.dup
+        super
       end
 
       # Provides sugary syntax for adding and querying predicates
@@ -112,7 +119,7 @@ module SemanticAttributes
             options = args.last.is_a?(Hash) ? args.pop : {}
             options[:or_empty] = false if !$4.nil?
             fields = ($1 == 'fields') ? args.map(&:to_s) : [$1]
-            
+
             predicate = $5
             if $6 == '?'
               self.semantic_attributes[fields.first].has? predicate
