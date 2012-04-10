@@ -56,7 +56,7 @@ class Predicates::Length < Predicates::Base
   
   def tokenize(value)
     case value
-      when Array, Hash: value
+      when Array, Hash then value
       else              value.to_s.mb_chars
     end
   end

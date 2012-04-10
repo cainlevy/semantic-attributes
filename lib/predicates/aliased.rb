@@ -13,6 +13,10 @@ class Predicates::Aliased < Predicates::Enumerated
   end
 
   def normalize(v)
-    options.index(v)
+    if RUBY_VERSION < "1.9"
+      options.index(v)
+    else
+      options.key(v)
+    end
   end
 end

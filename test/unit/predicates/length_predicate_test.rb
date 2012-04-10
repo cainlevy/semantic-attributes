@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
 class LengthPredicateTest < SemanticAttributes::TestCase
@@ -66,7 +67,7 @@ class LengthPredicateTest < SemanticAttributes::TestCase
   end
   
   def test_multibyte_characters
-    $KCODE = "UTF8" # so ActiveSupport uses the UTF8Handler for Chars
+    $KCODE = "UTF8" if RUBY_VERSION < "1.9" # so ActiveSupport uses the UTF8Handler for Chars
     @predicate.exactly = 4
     assert @predicate.validate('ægis', nil)
     assert !@predicate.validate('aegis', nil)

@@ -36,7 +36,7 @@ class Predicates::Email < Predicates::Base
     local_part_quoted = '\"(([[:alnum:]' + local_part_special_chars + '\.\+]*|(\\\\[\x00-\xFF]))*)\"'
     Regexp.new(
       '^((' + local_part_unquoted + ')|(' + local_part_quoted + ')+)@(((\w+\-+)|(\w+\.))*\w{1,63}\.[a-z]{2,6}$)',
-      Regexp::EXTENDED | Regexp::IGNORECASE
+      Regexp::EXTENDED | Regexp::IGNORECASE, "n"
     )
   end
 end
