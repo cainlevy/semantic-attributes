@@ -3,6 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 class AttributeFormatsTest < SemanticAttributes::TestCase
   class User < User
     cell_is_a_phone_number
+    cell_is_required
   end
 
   def setup

@@ -52,7 +52,7 @@ module SemanticAttributes #:nodoc:
         
         writer = "#{attr}_with_normalization="
         old_writer = "#{attr}_without_normalization=".to_sym
-        unless instance_methods.include? writer
+        unless method_defined? writer
           define_method writer do |val|
             send(old_writer, self.class.normalize(attr, val))
           end
