@@ -1,4 +1,7 @@
 I18n.load_path << File.dirname(__FILE__) + '/semantic_attributes/locale/en.yml'
+
+module SemanticAttributes; end
+
 require 'core_ext/class'
 require 'active_record/validation_recursion_control'
 require 'predicates'
