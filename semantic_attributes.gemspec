@@ -16,13 +16,12 @@ Gem::Specification.new do |s|
     'introspection (User.name_is_required?) and supports database' +
     ' normalization (aka "form input cleaning").'
 
-#  s.add_dependency "activerecord", ">= 3.0.12"
-  s.add_dependency "rails", "~> 3.2.2"
+  s.add_dependency "rails", "~> 4.0.0"
 
   s.add_development_dependency "bundler", ">= 1.0.0"
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rake", "0.8.7"
-  s.add_development_dependency "mocha", ">= 0.10.5"
+  s.add_dependency "sqlite3"
+  s.add_development_dependency "rake", "10.1.0"
+  s.add_development_dependency "mocha", ">= 0.14.0"
 
   s.files = `git ls-files`.split("\n")
   s.test_files = `git ls-files -- test/*`.split("\n")
