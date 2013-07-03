@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
     'introspection (User.name_is_required?) and supports database' +
     ' normalization (aka "form input cleaning").'
 
-  s.add_dependency "rails", "~> 4.0.0"
+  s.add_dependency "rails", ">= 3.2.13"
 
   s.add_development_dependency "bundler", ">= 1.0.0"
   s.add_dependency "sqlite3"
