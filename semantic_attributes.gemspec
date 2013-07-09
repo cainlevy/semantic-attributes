@@ -20,8 +20,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "bundler", ">= 1.0.0"
   s.add_dependency "sqlite3"
-  s.add_development_dependency "rake", "10.1.0"
-  s.add_development_dependency "mocha", ">= 0.14.0"
+  s.add_development_dependency "rake", ">= 0.8.7"
+  s.add_development_dependency "mocha", ">= 0.10.5"
 
   s.files = `git ls-files`.split("\n")
   s.test_files = `git ls-files -- test/*`.split("\n")
