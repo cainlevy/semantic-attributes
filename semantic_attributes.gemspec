@@ -9,10 +9,10 @@ Gem::Specification.new do |s|
   s.authors = ["Lance Ivy"]
   s.email = 'lance@kickstarter.com'
   s.platform = Gem::Platform::RUBY
-  s.homepage = %q{http://github.com/kickstarter/semantic-attributes}
+  s.homepage = %q{http://github.com/cainlevy/semantic-attributes}
   s.require_paths = ["lib"]
   s.summary = 'A validation library for ActiveRecord models.'
-  s.description = 'A validation library for ActiveRecord models that allows ' + 
+  s.description = 'A validation library for ActiveRecord models that allows ' +
     'introspection (User.name_is_required?) and supports database' +
     ' normalization (aka "form input cleaning").'
 
