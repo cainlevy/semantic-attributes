@@ -48,7 +48,7 @@ module SemanticAttributes #:nodoc:
       protected
 
       def define_normalization_method_for(attr)
-        if ::ActiveRecord::VERSION::STRING >= "4.0.4"
+        if ::ActiveRecord.version >= Gem::Version.new("4.0.4")
           # Changes from Rails 4.0.4: https://github.com/rails/rails/commit/714634ad02b443ab51f8ef3ded324de411715d2a
           self.define_attribute_methods if !@attribute_methods_generated
         else
