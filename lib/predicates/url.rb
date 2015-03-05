@@ -7,7 +7,7 @@ require 'uri'
 #   :schemes [array, default ['http', 'https']] - a whitelist of allowed schemes. set to nil to allow all schemes.
 #   :ports [array, default nil] - a whitelist of allowed ports. set to nil to allow all ports.
 #   :allow_ip_address [boolean, default true] - whether to allow ip addresses instead to domain names.
-#   :implied_scheme [string, symbol, default 'http'] - what scheme to assume if non is present.
+#   :implied_scheme [string, symbol, default 'http'] - what scheme to assume if none is present.
 #
 # ==Examples
 #   # if you need an ftp url
