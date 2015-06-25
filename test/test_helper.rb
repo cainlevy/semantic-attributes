@@ -1,7 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 
 # load the support libraries
-require 'test/unit'
+require 'minitest/autorun'
 require 'rubygems'
 require 'active_record'
 require 'active_record/fixtures'

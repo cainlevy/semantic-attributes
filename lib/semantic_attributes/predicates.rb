@@ -128,6 +128,7 @@ module SemanticAttributes
               args << options if options
               fields.each do |field|
                 # TODO: create a less sugary method that may be used programmatically and takes care of defining the normalization method properly
+                define_humanization_method_for field
                 define_normalization_method_for field
                 self.semantic_attributes[field].add *args
               end
