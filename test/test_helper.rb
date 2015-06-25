@@ -14,7 +14,7 @@ Time.zone = 'UTC'
 
 # establish the database connection
 ActiveRecord::Base.configurations = YAML::load(IO.read(File.dirname(__FILE__) + '/db/database.yml'))
-ActiveRecord::Base.establish_connection('semantic_attributes_test')
+ActiveRecord::Base.establish_connection(:semantic_attributes_test)
 
 # capture the logging
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/test.log")
