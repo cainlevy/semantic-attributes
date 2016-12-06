@@ -1,8 +1,9 @@
 ENV["RAILS_ENV"] = "test"
 
 # load the support libraries
-require 'minitest/autorun'
 require 'rubygems'
+require "minitest/autorun"
+require "mocha/mini_test"
 require 'active_record'
 require 'active_record/fixtures'
 require 'active_support/time'
@@ -36,6 +37,12 @@ class SemanticAttributes::TestCase < ActiveSupport::TestCase
   self.fixture_path = File.dirname(__FILE__) + '/fixtures/'
 
   fixtures :all
+
+  # >= Rails 4.2
+  if ActiveSupport.respond_to?(:test_order)
+    ActiveSupport.test_order = :random
+  end
+
 end
 
 class ActiveRecord::Base

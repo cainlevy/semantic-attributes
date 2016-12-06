@@ -99,7 +99,7 @@ class ValidationsTest < SemanticAttributes::TestCase
     predicate = @record.semantic_attributes['login'].get('number')
     predicate.expects(:validate).never
 
-    [nil, '', []].each do |empty_value|
+    [nil, ''].each do |empty_value|
       @record.login = empty_value
       assert @record.valid?
     end
@@ -112,7 +112,7 @@ class ValidationsTest < SemanticAttributes::TestCase
     predicate = @record.semantic_attributes['login'].get('number')
     predicate.expects(:validate).never
 
-    [nil, '', []].each do |empty_value|
+    [nil, ''].each do |empty_value|
       @record.login = empty_value
       assert !@record.valid?
       assert @record.errors[:login]

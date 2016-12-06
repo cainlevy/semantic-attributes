@@ -86,7 +86,7 @@ module SemanticAttributes
       def semantic_attributes=(val)
         @semantic_attributes = val || SemanticAttributes::Set.new
       end
- 
+
       def inherited(klass)
         klass.semantic_attributes = self.semantic_attributes.dup
         super

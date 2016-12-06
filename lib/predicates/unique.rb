@@ -23,9 +23,9 @@ class Predicates::Unique < Predicates::Base
     @error_message || :taken
   end
 
-  def validate(value, record)  
+  def validate(value, record)
     klass = record.class
-  
+
     # merge all the scope fields with this one. they must all be unique together.
     # no special treatment -- case sensitivity applies to all or none.
     values = [scope].flatten.collect{ |attr| [attr, record.send(attr)] }
@@ -41,16 +41,24 @@ class Predicates::Unique < Predicates::Base
 
     !klass.where(sql.join(" AND ")).exists?
   end
-  
+
   protected
-  
+
   def comparison_for(field, value, klass)
     quoted_field = "#{klass.quoted_table_name}.#{klass.connection.quote_column_name(field)}"
 
     if klass.columns_hash[field.to_s].text?
       if case_sensitive
         # case sensitive text comparison in any database
-        klass.send(:sanitize_sql, ["#{quoted_field} #{klass.connection.case_sensitive_equality_operator} ?", value])
+        if klass.connection.respond_to?(:case_sensitive_equality_operator)
+          # <= Rails 4.1
+          comparison = klass.send(:sanitize_sql, ["#{quoted_field} #{klass.connection.case_sensitive_equality_operator} ?", value])
+        else
+          # >= Rails 4.2
+          case_sensitive_value = klass.connection.case_sensitive_modifier(value, field)
+          case_sensitive_value = case_sensitive_value.to_sql if case_sensitive_value.respond_to?(:to_sql)
+          klass.send(:sanitize_sql, ["#{quoted_field} = ?", case_sensitive_value])
+        end
       elsif mysql?(klass.connection)
         # case INsensitive text comparison in mysql - yes this is a database specific optimization. i'm always open to better ways. :)
         klass.send(:sanitize_sql, ["#{quoted_field} = ?", value])
@@ -60,10 +68,10 @@ class Predicates::Unique < Predicates::Base
       end
     else
       # non-text comparison
-      klass.send(:sanitize_sql, {field => value})
+      klass.send(:sanitize_sql, ["#{quoted_field} = ?", value])
     end
   end
-  
+
   def mysql?(connection)
     (defined?(ActiveRecord::ConnectionAdapters::MysqlAdapter) and connection.is_a?(ActiveRecord::ConnectionAdapters::MysqlAdapter)) or
       (defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter) and connection.is_a?(ActiveRecord::ConnectionAdapters::Mysql2Adapter))
